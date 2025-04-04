@@ -1,0 +1,44 @@
+{
+  "name": "next-chat-server",
+  "version": "1.0.0",
+  "description": "Backend server for my next chat",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.ts",
+    "build": "tsc",
+    "start": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codewitgabi/next-chat.git"
+  },
+  "keywords": [
+    "next",
+    "chat"
+  ],
+  "author": "Gabriel Michael Ojomakpene (codewitgabi)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codewitgabi/next-chat/issues"
+  },
+  "homepage": "https://github.com/codewitgabi/next-chat#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "class-validator": "^0.14.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.13.14",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}

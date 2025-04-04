@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #d1e6ff;
+  --secondary: #ffffff;
+  --hover-effect: #fafafa;
+  --foreground: #555758;
+  --light-black-dark-blue: #555758;
+
+  --blue-500: #2f83e4;
+  --blue-600: #085ec3;
+  --blue-700: #1d75dd;
+  --red: #ff4f57;
 }
 
+/* Tailwind css configurations */
+
 @theme inline {
-  --color-background: var(--background);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --color-foreground: var(--foreground);
+  --color-hover-effect: var(--hover-effect);
+  --color-light-black-dark-blue: var(--light-black-dark-blue);
+  --color-blue-500: var(--blue-500);
+  --color-blue-600: var(--blue-600);
+  --color-blue-700: var(--blue-700);
+  --color-red: var(--red);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* next-themes dark mode configuration */
+
+[data-theme="dark"] {
+  --primary: #002047;
+  --secondary: #001329;
+  --hover-effect: #2f83e4;
+  --foreground: #ffffff;
+  --light-black-dark-blue: #bfdbfd;
 }
 
-body {
-  background: var(--background);
+body,
+html {
+  height: 100%;
+  overflow: hidden;
+  background: var(--primary);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
