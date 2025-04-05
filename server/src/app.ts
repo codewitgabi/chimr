@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import logger from "morgan";
 import connectDb from "./utils/config/db.config";
 import authRouter from "./routes/auth.routes";
+import usersRouter from "./routes/user.routes";
 import { errorHandler } from "./middlewares/errors.handler";
 
 const app: Express = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", usersRouter);
 
 // Middlewares
 

@@ -37,9 +37,16 @@ class AuthService {
       password,
     });
 
+    // Generate access token
+
+    const accessToken = this.generateAccessToken({
+      _id: String(newUser._id),
+      username: newUser.username,
+    });
+
     return SuccessResponse({
       message: "User created successfully",
-      data: { user: newUser },
+      data: { accessToken, user: newUser.toObject() },
     });
   }
 
