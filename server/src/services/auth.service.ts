@@ -1,6 +1,7 @@
 import { IUser } from "../types/auth.types";
 import User from "../models/user.model";
-import { IErrorResponse, ISuccessResponse } from "../types/response.types";
+import { BadRequestError } from "../utils/api.errors";
+import { StatusCodes } from "http-status-codes";
 
 class AuthService {
   /**
@@ -13,53 +14,32 @@ class AuthService {
     jobTitle,
     about,
     password,
-  }: Exclude<IUser, "id"> & { password: string }): Promise<
-    IErrorResponse | ISuccessResponse
-  > {
-    try {
-      // Check if user with username already exists
+  }: Exclude<IUser, "id"> & { password: string }) {
+    // Check if user with username already exists
 
-      const user = await User.findOne({ username });
+    const user = await User.findOne({ username });
 
-      if (user) {
-        return {
-          status: "error",
-          message: "User with username already exists",
-          trace: null,
-          httpStatus: 400,
-        };
-      }
-
-      // Create user
-
-      const newUser = await User.create({
-        username,
-        profilePic,
-        jobTitle,
-        about,
-        password,
-      });
-
-      return {
-        status: "success",
-        message: "User created successfully",
-        data: { user: newUser },
-        httpStatus: 201,
-      };
-    } catch (e) {
-      return {
-        status: "error",
-        message: `${e}`,
-        trace: `${e}`,
-        httpStatus: 500,
-      };
+    if (user) {
+      throw new BadRequestError("User with username already exists");
     }
-  }
 
-  // login({
-  //   username,
-  //   password,
-  // }: Pick<IUser, "username"> & { password: string }) {}
+    // Create user
+
+    const newUser = await User.create({
+      username,
+      profilePic,
+      jobTitle,
+      about,
+      password,
+    });
+
+    return {
+      status: "success",
+      message: "User created successfully",
+      data: { user: newUser },
+      httpStatus: StatusCodes.CREATED,
+    };
+  }
 }
 
 const authService = new AuthService();

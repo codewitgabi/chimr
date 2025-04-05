@@ -1,9 +1,9 @@
-import {Router} from "express";
+import { Router } from "express";
 import { registerUser } from "../controllers/auth.controller";
+import { CreateUserSchema } from "../utils/validators/auth.validators";
 
-const router = Router()
+const router = Router();
 
-router.post("/register", registerUser)
-
+router.post("/register", CreateUserSchema, registerUser);
 
 export default router;
