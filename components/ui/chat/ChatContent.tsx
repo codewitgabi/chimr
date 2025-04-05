@@ -2,12 +2,14 @@
 
 import useAppStore from "@/utils/store";
 import Image, { StaticImageData } from "next/image";
+import ChatMessageInput from "./ChatMessageInput";
+import ChatBubble from "./ChatBubble";
 
 function ChatContent() {
   const selectedContact = useAppStore((state) => state.selectedContact);
 
   return (
-    <div className="flex-1 overflow-y-auto flex flex-col">
+    <div className="flex-1 col-span-2 overflow-y-auto flex flex-col max-[655px]:hidden">
       <div className="flex items-center justify-between bg-secondary p-4 rounded-xl">
         {selectedContact ? (
           <div className="flex items-center gap-2">
@@ -63,7 +65,49 @@ function ChatContent() {
 
       {/* Chat content */}
 
-      <div className="mt-6 bg-secondary rounded-xl p-4 grow"></div>
+      <div className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col">
+        <div className="grow overflow-y-auto">
+          <ChatBubble
+            message="Hey, wassup 😊"
+            timestamp="12:34 PM"
+            type="sender"
+          />
+          <ChatBubble
+            message="I am good, how are you doing today?"
+            timestamp="12:34 PM"
+            type="receiver"
+          />
+          <ChatBubble
+            message="Hope you're good?"
+            timestamp="12:34 PM"
+            type="receiver"
+          />
+          <ChatBubble
+            message="Yeah, I am good, you?"
+            timestamp="12:34 PM"
+            type="sender"
+          />
+          <ChatBubble
+            message="I am good too, thanks 🙏"
+            timestamp="12:34 PM"
+            type="receiver"
+          />
+          <ChatBubble
+            message="Alright, let me get back to work"
+            timestamp="12:34 PM"
+            type="sender"
+          />
+          <ChatBubble
+            message="Alright, let me get back to work"
+            timestamp="12:34 PM"
+            type="sender"
+          />
+        </div>
+
+        {/* Text input field */}
+
+        <ChatMessageInput />
+      </div>
     </div>
   );
 }

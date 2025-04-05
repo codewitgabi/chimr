@@ -5,7 +5,7 @@ import ChatContent from "../ui/chat/ChatContent";
 
 function ChatSection() {
   return (
-    <section className="flex gap-6 flex-1 overflow-hidden mt-4">
+    <section className="grid grid-cols-4 gap-2 flex-1 overflow-hidden mt-4 max-[1200px]:grid-cols-3 max-[655px]:grid-cols-1">
       {/* Contact */}
 
       <div className="flex-1 overflow-y-auto flex flex-col">

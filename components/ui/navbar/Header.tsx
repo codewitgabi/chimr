@@ -45,7 +45,7 @@ function Header({ title }: HeaderProps) {
             height={40}
           />
 
-          <h1 className="text-sm">
+          <h1 className="text-sm max-[425px]:hidden">
             Leslie Alexander
           </h1>
         </div>

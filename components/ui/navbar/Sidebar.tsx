@@ -4,7 +4,7 @@ import AppLogo from "../AppLogo";
 
 function Sidebar() {
   return (
-    <aside className="w-[200px] h-full bg-secondary flex flex-col shrink-0 justify-between gap-12 overflow-y-auto">
+    <aside className="w-[200px] h-full bg-secondary flex flex-col shrink-0 justify-between gap-12 overflow-y-auto max-[965px]:hidden">
       <div>
         {/* App Logo */}
 

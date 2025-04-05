@@ -21,12 +21,10 @@ function ChatContactList() {
         about: "",
       });
     }
-
-    console.log("Logged")
   });
 
   return (
-    <div className="bg-secondary rounded-xl mt-4 overflow-auto grow">
+    <div className="bg-secondary rounded-xl mt-4 overflow-y-auto grow">
       <div className="divide-y divide-primary">
         {chatContacts.map((contact) => (
           <ChatContactCard key={contact.userId} {...contact} />
