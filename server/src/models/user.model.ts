@@ -1,7 +1,16 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 
-const UserSchema = new Schema(
+interface IUserSchema extends Document {
+  username: string;
+  password: string;
+  profilePic: string;
+  jobTitle: string;
+  about: string;
+  checkPassword: (password: string) => string;
+}
+
+const UserSchema: Schema<IUserSchema> = new Schema(
   {
     username: {
       type: String,
@@ -45,8 +54,12 @@ const UserSchema = new Schema(
       required: true,
     },
   },
-  { timestamp: true, versionKey: false }
+  { timestamp: true, versionKey: false, toObject: { useProjection: true } }
 );
 
-const User = mongoose.model("User", UserSchema);
+UserSchema.methods.checkPassword = function (password: string) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+const User = mongoose.model<IUserSchema>("User", UserSchema);
 export default User;

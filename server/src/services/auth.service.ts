@@ -2,6 +2,10 @@ import { IUser } from "../types/auth.types";
 import User from "../models/user.model";
 import { BadRequestError } from "../utils/api.errors";
 import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
+import { SuccessResponse } from "../utils/responses";
+import { config } from "dotenv";
+config();
 
 class AuthService {
   /**
@@ -33,12 +37,50 @@ class AuthService {
       password,
     });
 
-    return {
-      status: "success",
+    return SuccessResponse({
       message: "User created successfully",
       data: { user: newUser },
-      httpStatus: StatusCodes.CREATED,
-    };
+    });
+  }
+
+  async login({
+    username,
+    password,
+  }: Pick<IUser, "username"> & { password: string }) {
+    // Check if user with username exists
+
+    const user = await User.findOne({ username }).select("+password");
+
+    if (!user) {
+      throw new BadRequestError("Incorrect username or password");
+    }
+
+    // Check if password is correct
+
+    if (!user.checkPassword(password)) {
+      throw new BadRequestError("Incorrect username or password");
+    }
+
+    // Generate access token
+
+    const accessToken = this.generateAccessToken({
+      _id: String(user._id),
+      username: user.username,
+    });
+
+    return SuccessResponse({
+      message: "Login successful",
+      data: { accessToken, user: user.toObject() },
+      httpStatus: StatusCodes.OK,
+    });
+  }
+
+  generateAccessToken(user: { _id: string; username: string }) {
+    const accessToken = jwt.sign(user, process.env.JWT_SECRET as string, {
+      expiresIn: "7d",
+    });
+
+    return accessToken;
   }
 }
 

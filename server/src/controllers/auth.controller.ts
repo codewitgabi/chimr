@@ -7,3 +7,9 @@ export const registerUser = catchAsync(async (req: Request, res: Response) => {
 
   return res.status(response.httpStatus).json(response);
 });
+
+export const login = catchAsync(async (req: Request, res: Response) => {
+  const response = await authService.login({ ...req.body });
+
+  return res.status(response.httpStatus).json(response);
+});

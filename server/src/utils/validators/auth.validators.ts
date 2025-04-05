@@ -26,3 +26,11 @@ export const CreateUserSchema = [
   body("about").notEmpty().withMessage("This field is required"),
   validateRequest, // ! Always add this at the end of the validation chain
 ];
+
+export const LoginSchema = [
+  body("username").notEmpty().withMessage("This field is required"),
+  body("password")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters"),
+  validateRequest, // ! Always add this at the end of the validation chain
+];
