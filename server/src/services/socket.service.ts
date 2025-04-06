@@ -12,7 +12,7 @@ class SocketService {
       // First, get all users except the current user
       const allUsers = await User.find(
         { _id: { $ne: userId } },
-        "username profilePic"
+        "username profilePic about jobTitle"
       ).lean();
 
       // Get conversation data for each user
@@ -37,8 +37,10 @@ class SocketService {
 
           return {
             contactId: user._id.toString(),
-            name: user.username,
-            profilePicture: user.profilePic || null,
+            username: user.username,
+            profilePic: user.profilePic || null,
+            about: user.about,
+            jobTitle: user.jobTitle,
             lastMessage: lastMessage ? lastMessage.message : null,
             timestamp: lastMessage ? lastMessage.createdAt : null,
             isRead: lastMessage ? lastMessage.isRead : true,
@@ -59,7 +61,7 @@ class SocketService {
         if (a.timestamp) return -1;
         if (b.timestamp) return 1;
         // Otherwise sort alphabetically
-        return a.name.localeCompare(b.name);
+        return a.username.localeCompare(b.username);
       });
     } catch (error) {
       console.error("Error fetching contacts:", error);
@@ -152,8 +154,6 @@ class SocketService {
         messages: messages.reverse(), // Return in chronological order
         totalCount,
         hasMore: totalCount > skip + messages.length,
-        page,
-        limit,
       };
     } catch (error) {
       console.error("Error fetching message history:", error);

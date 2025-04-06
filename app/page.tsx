@@ -11,8 +11,6 @@ function Page() {
         <Header title="Chat" />
 
         <ChatSection />
-        {/* <div className="grow mt-4 flex flex-col overflow-auto">
-        </div> */}
       </div>
     </div>
   );

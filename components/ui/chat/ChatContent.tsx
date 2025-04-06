@@ -4,6 +4,7 @@ import useAppStore from "@/utils/store";
 import Image, { StaticImageData } from "next/image";
 import ChatMessageInput from "./ChatMessageInput";
 import ChatBubble from "./ChatBubble";
+// import ContactProfileDetailPopover from "../popover/ContactProfileDetailPopover";
 
 function ChatContent() {
   const selectedContact = useAppStore((state) => state.selectedContact);
@@ -30,7 +31,7 @@ function ChatContent() {
           "Loading...."
         )}
 
-        <button className="">
+        <button className="relative" onClick={() => {}}>
           <svg
             width="27"
             height="27"
@@ -60,6 +61,8 @@ function ChatContent() {
               strokeLinejoin="round"
             />
           </svg>
+
+          {/* <ContactProfileDetailPopover /> */}
         </button>
       </div>
 

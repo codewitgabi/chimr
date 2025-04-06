@@ -1,26 +1,42 @@
 "use client";
 
-import { ChatContactCardProps } from "@/types/chat.types";
+import { socket } from "@/lib/socket";
+import { IChatContact } from "@/types/chat.types";
+import parseTimestamp from "@/utils/parseTimestamp";
 import useAppStore from "@/utils/store";
 import Image from "next/image";
 
 function ChatContactCard({
-  userId,
+  contactId,
   profilePic,
   username,
   jobTitle,
-  lastMessageSent,
+  timestamp,
   lastMessage,
-}: ChatContactCardProps) {
+  unreadCount,
+  about,
+}: Omit<IChatContact, "isRead">) {
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
 
   const handleClick = () => {
     setSelectedContact({
-      id: userId,
+      contactId,
       username,
       profilePic,
       jobTitle,
-      about: "",
+      about,
+      timestamp,
+      lastMessage,
+      unreadCount,
+      isRead: false,
+    });
+
+    // Fetch chat history for selected contact
+
+    socket.emit("get_chat_history", {
+      contactId,
+      limit: 20,
+      page: 1
     });
   };
 
@@ -44,12 +60,25 @@ function ChatContactCard({
           </div>
         </div>
 
-        <span className="text-sm opacity-80">{lastMessageSent}</span>
+        {timestamp && (
+          <span className="text-xs shrink-0 opacity-80">
+            {parseTimestamp(timestamp)}
+          </span>
+        )}
       </div>
 
       {/* Message preview text */}
 
-      <p className="mt-6 text-sm line-clamp-1">{lastMessage}</p>
+      <div className="mt-6 flex items-center gap-4 justify-between">
+        <p className="text-sm line-clamp-1">
+          {lastMessage ? lastMessage : "Start new conversation"}
+        </p>
+        {unreadCount > 0 && (
+          <p className="text-xs bg-primary pt-0.5 px-1 rounded-full">
+            {unreadCount}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

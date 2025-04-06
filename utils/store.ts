@@ -7,6 +7,9 @@ const useAppStore = create<State & StateAction>((set) => ({
   navState: "closed",
   user: null,
   selectedContact: null,
+  isSocketConnected: false,
+  contacts: [],
+  chatHistory: null,
 
   // State actions
 
@@ -21,6 +24,18 @@ const useAppStore = create<State & StateAction>((set) => ({
 
   setSelectContact: (contact) => {
     set({ selectedContact: contact });
+  },
+
+  setIsSocketConnected: (value) => {
+    set({ isSocketConnected: value });
+  },
+
+  setContacts: (contacts) => {
+    set({ contacts });
+  },
+
+  setChatHistory: (chatHistory) => {
+    set({ chatHistory });
   },
 }));
 

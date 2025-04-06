@@ -113,7 +113,7 @@ io.on("connection", async (socket: TExtendedSocket) => {
             userIdStr,
             receiverId
           );
-          
+
           socket.emit("update_contact", updatedContactForSender);
 
           // Check if receiver is online and update contact
@@ -136,7 +136,7 @@ io.on("connection", async (socket: TExtendedSocket) => {
     // Handle request for message history between two users
 
     socket.on(
-      "get_message_history",
+      "get_chat_history",
       async ({
         contactId,
         page = 1,
@@ -154,11 +154,16 @@ io.on("connection", async (socket: TExtendedSocket) => {
             limit,
           });
 
-          socket.emit("message_history", { contactId, messages, page, limit });
+          socket.emit("chat_history", {
+            contactId,
+            ...messages,
+            page,
+            limit,
+          });
         } catch (error) {
           console.error(error);
 
-          socket.emit("message_history_error", {
+          socket.emit("chat_history_error", {
             error: "Failed to fetch message history",
           });
         }

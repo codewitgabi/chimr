@@ -1,33 +1,28 @@
 "use client";
 
-import chatContacts from "@/lib/data/chat-contacts";
 import ChatContactCard from "./ChatContactCard";
 import useAppStore from "@/utils/store";
-import { useEffect } from "react";
 
 function ChatContactList() {
-  const setSelectedContact = useAppStore((state) => state.setSelectContact);
-  const selectedContact = useAppStore((state) => state.selectedContact);
+  const contacts = useAppStore((state) => state.contacts);
+  // const selectedContact = useAppStore((state) => state.selectedContact);
 
-  useEffect(() => {
-    if (!selectedContact) {
-      const { userId, username, profilePic, jobTitle } = chatContacts[0];
+  // useEffect(() => {
+  //   if (!selectedContact) {
+  //     const contact = contacts[0];
 
-      setSelectedContact({
-        id: userId,
-        username,
-        profilePic,
-        jobTitle,
-        about: "",
-      });
-    }
-  });
+  //     setSelectedContact({
+  //       ...contact,
+  //       isRead: false,
+  //     });
+  //   }
+  // }, [contacts, setSelectedContact, selectedContact]);
 
   return (
     <div className="bg-secondary rounded-xl mt-4 overflow-y-auto grow">
       <div className="divide-y divide-primary">
-        {chatContacts.map((contact) => (
-          <ChatContactCard key={contact.userId} {...contact} />
+        {contacts.map((contact) => (
+          <ChatContactCard key={contact.contactId} {...contact} />
         ))}
       </div>
     </div>
