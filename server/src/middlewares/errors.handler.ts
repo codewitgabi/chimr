@@ -4,6 +4,8 @@
 import { Request, Response, NextFunction } from "express";
 import APIError from "../utils/api.errors";
 import mongoose from "mongoose";
+import { StatusCodes } from "http-status-codes";
+import errorCodes, { IErrorStatus } from "../utils/errorCodes";
 
 const handleValidationError = (err: mongoose.Error.ValidationError) => {
   // Transform Mongoose validation error into a custom format
@@ -17,7 +19,7 @@ const handleValidationError = (err: mongoose.Error.ValidationError) => {
   return errors;
 };
 
-export const errorHandler = (
+export const RequestErrorHandler = (
   err: Error | APIError,
   req: Request,
   res: Response,
@@ -26,7 +28,7 @@ export const errorHandler = (
   // Default values
 
   let statusCode = 500;
-  let status = "error";
+  const status = "error";
   let message = "Something went wrong";
   let errors = undefined;
 
@@ -34,7 +36,6 @@ export const errorHandler = (
 
   if ("statusCode" in err) {
     statusCode = err.statusCode;
-    status = err.status;
     message = err.message;
     errors = (err as APIError).errors;
   } else if (err instanceof mongoose.Error.ValidationError) {
@@ -43,23 +44,36 @@ export const errorHandler = (
     const formattedErrors = handleValidationError(err);
 
     statusCode = 422;
-    status = "fail";
     message = "Validation Error";
     errors = formattedErrors;
   } else if (err.name === "CastError") {
     // Mongoose cast error
 
     statusCode = 400;
-    status = "fail";
     message = `Invalid mongoose error`;
   }
 
   // Send the error response
+
   res.status(statusCode).json({
     statusCode,
     status,
-    message,
-    ...(errors && { errors }),
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    error: {
+      code: errorCodes[statusCode as IErrorStatus],
+      message,
+      ...(errors && { details: errors }),
+      ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    },
+  });
+};
+
+export const NotFoundErrorHandler = (req: Request, res: Response) => {
+  res.status(StatusCodes.NOT_FOUND).json({
+    statusCode: StatusCodes.NOT_FOUND,
+    status: "error",
+    error: {
+      code: errorCodes[StatusCodes.NOT_FOUND],
+      message: "Not found",
+    },
   });
 };

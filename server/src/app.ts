@@ -3,7 +3,7 @@ import logger from "morgan";
 import connectDb from "./utils/config/db.config";
 import authRouter from "./routes/auth.routes";
 import usersRouter from "./routes/user.routes";
-import { errorHandler } from "./middlewares/errors.handler";
+import { RequestErrorHandler, NotFoundErrorHandler } from "./middlewares/errors.handler";
 
 const app: Express = express();
 
@@ -19,7 +19,8 @@ app.use("/api/v1/users", usersRouter);
 
 // Middlewares
 
-app.use(errorHandler);
+app.use("*", NotFoundErrorHandler)
+app.use(RequestErrorHandler);
 
 (() => {
   connectDb()
