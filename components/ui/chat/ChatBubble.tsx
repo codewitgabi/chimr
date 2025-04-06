@@ -1,3 +1,5 @@
+import { parseTimestampToTimeString } from "@/utils/parseTimestamp";
+
 interface ChatBubbleProps {
   message: string;
   timestamp: string;
@@ -12,7 +14,7 @@ function ChatBubble({ message, timestamp, type }: ChatBubbleProps) {
       }`}
     >
       <p className="text-sm">{message}</p>
-      <span className="text-xs">{timestamp}</span>
+      <span className="text-xs">{parseTimestampToTimeString(timestamp)}</span>
     </div>
   );
 }

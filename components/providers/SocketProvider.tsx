@@ -53,8 +53,6 @@ function SocketProvider({ children }: { children: ReactNode }) {
     }
 
     function onGetChatHistory(chatHistory: IChatHistory) {
-      console.log(chatHistory);
-
       setChatHistory(chatHistory);
     }
 

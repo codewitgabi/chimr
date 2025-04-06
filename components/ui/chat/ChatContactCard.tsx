@@ -2,7 +2,7 @@
 
 import { socket } from "@/lib/socket";
 import { IChatContact } from "@/types/chat.types";
-import parseTimestamp from "@/utils/parseTimestamp";
+import { parseTimestamp } from "@/utils/parseTimestamp";
 import useAppStore from "@/utils/store";
 import Image from "next/image";
 
@@ -36,7 +36,7 @@ function ChatContactCard({
     socket.emit("get_chat_history", {
       contactId,
       limit: 20,
-      page: 1
+      page: 1,
     });
   };
 

@@ -4,10 +4,10 @@ import useAppStore from "@/utils/store";
 import Image, { StaticImageData } from "next/image";
 import ChatMessageInput from "./ChatMessageInput";
 import ChatBubble from "./ChatBubble";
-// import ContactProfileDetailPopover from "../popover/ContactProfileDetailPopover";
 
 function ChatContent() {
   const selectedContact = useAppStore((state) => state.selectedContact);
+  const chatHistory = useAppStore((state) => state.chatHistory);
 
   return (
     <div className="flex-1 col-span-2 overflow-y-auto flex flex-col max-[655px]:hidden">
@@ -61,8 +61,6 @@ function ChatContent() {
               strokeLinejoin="round"
             />
           </svg>
-
-          {/* <ContactProfileDetailPopover /> */}
         </button>
       </div>
 
@@ -70,41 +68,21 @@ function ChatContent() {
 
       <div className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col">
         <div className="grow overflow-y-auto">
-          <ChatBubble
-            message="Hey, wassup 😊"
-            timestamp="12:34 PM"
-            type="sender"
-          />
-          <ChatBubble
-            message="I am good, how are you doing today?"
-            timestamp="12:34 PM"
-            type="receiver"
-          />
-          <ChatBubble
-            message="Hope you're good?"
-            timestamp="12:34 PM"
-            type="receiver"
-          />
-          <ChatBubble
-            message="Yeah, I am good, you?"
-            timestamp="12:34 PM"
-            type="sender"
-          />
-          <ChatBubble
-            message="I am good too, thanks 🙏"
-            timestamp="12:34 PM"
-            type="receiver"
-          />
-          <ChatBubble
-            message="Alright, let me get back to work"
-            timestamp="12:34 PM"
-            type="sender"
-          />
-          <ChatBubble
-            message="Alright, let me get back to work"
-            timestamp="12:34 PM"
-            type="sender"
-          />
+          {chatHistory &&
+            chatHistory.messages.map(
+              ({ _id, createdAt, sender: { _id: senderId }, message }) => (
+                <ChatBubble
+                  key={_id}
+                  message={message}
+                  timestamp={createdAt}
+                  type={
+                    senderId === "67f126dac0b8fa775dc666dd"
+                      ? "sender"
+                      : "receiver"
+                  }
+                />
+              )
+            )}
         </div>
 
         {/* Text input field */}

@@ -1,6 +1,5 @@
-function parseTimestamp(isostring: string) {
-  const timestamp = new Date(isostring);
-
+export function parseTimestamp(isoString: string) {
+  const timestamp = new Date(isoString);
   const result = timestamp.toLocaleDateString("en-US", {
     month: "short",
     day: "2-digit",
@@ -10,4 +9,12 @@ function parseTimestamp(isostring: string) {
   return result;
 }
 
-export default parseTimestamp;
+export function parseTimestampToTimeString(isoString: string) {
+  const timestamp = new Date(isoString);
+  const result = timestamp.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return result;
+}

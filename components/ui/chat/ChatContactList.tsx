@@ -5,18 +5,6 @@ import useAppStore from "@/utils/store";
 
 function ChatContactList() {
   const contacts = useAppStore((state) => state.contacts);
-  // const selectedContact = useAppStore((state) => state.selectedContact);
-
-  // useEffect(() => {
-  //   if (!selectedContact) {
-  //     const contact = contacts[0];
-
-  //     setSelectedContact({
-  //       ...contact,
-  //       isRead: false,
-  //     });
-  //   }
-  // }, [contacts, setSelectedContact, selectedContact]);
 
   return (
     <div className="bg-secondary rounded-xl mt-4 overflow-y-auto grow">
