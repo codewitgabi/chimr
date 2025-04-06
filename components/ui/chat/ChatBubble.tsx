@@ -14,7 +14,7 @@ function ChatBubble({ message, timestamp, type }: ChatBubbleProps) {
       }`}
     >
       <p className="text-sm">{message}</p>
-      <span className="text-xs">{parseTimestampToTimeString(timestamp)}</span>
+      <span className="text-xs shrink-0">{parseTimestampToTimeString(timestamp)}</span>
     </div>
   );
 }
