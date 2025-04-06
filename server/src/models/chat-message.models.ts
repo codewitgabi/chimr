@@ -5,6 +5,8 @@ interface IChatMessageSchema extends Document {
   receiver: Schema.Types.ObjectId;
   message: string;
   isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ChatMessageSchema: Schema<IChatMessageSchema> = new Schema(
@@ -29,7 +31,7 @@ const ChatMessageSchema: Schema<IChatMessageSchema> = new Schema(
       default: false,
     },
   },
-  { timestamp: true, versionKey: false }
+  { timestamps: true, versionKey: false }
 );
 
 const ChatMessage = model<IChatMessageSchema>("ChatMessage", ChatMessageSchema);

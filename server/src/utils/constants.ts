@@ -1,0 +1,5 @@
+export const SOCKET_EVENTS = [
+  "ACTIVE_USERS",
+  "SEND_MESSAGE",
+  "GET_PRIVATE_MESSAGES",
+];

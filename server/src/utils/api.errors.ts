@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 
-export default class APIError extends Error {
+export default class ApiError extends Error {
   status: string;
 
   constructor(
@@ -18,31 +18,31 @@ export default class APIError extends Error {
   }
 }
 
-export class BadRequestError extends APIError {
+export class BadRequestError extends ApiError {
   constructor(message = "Bad Request", errors: Array<unknown> = []) {
     super(message, StatusCodes.BAD_REQUEST, errors);
   }
 }
 
-export class ValidationError extends APIError {
+export class ValidationError extends ApiError {
   constructor(message = "Validation failed", errors: Array<unknown> = []) {
     super(message, StatusCodes.UNPROCESSABLE_ENTITY, errors);
   }
 }
 
-export class NotFoundError extends APIError {
+export class NotFoundError extends ApiError {
   constructor(message = "Not Found", errors: Array<unknown> = []) {
     super(message, StatusCodes.NOT_FOUND, errors);
   }
 }
 
-export class UnauthorizedError extends APIError {
+export class UnauthorizedError extends ApiError {
   constructor(message = "Unauthorized", errors: Array<unknown> = []) {
     super(message, StatusCodes.UNAUTHORIZED, errors);
   }
 }
 
-export class ForbiddenError extends APIError {
+export class ForbiddenError extends ApiError {
   constructor(message = "Forbidden", errors: Array<unknown> = []) {
     super(message, StatusCodes.FORBIDDEN, errors);
   }

@@ -1,13 +1,15 @@
 import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 
-interface IUserSchema extends Document {
+export interface IUserSchema extends Document {
   username: string;
   password: string;
   profilePic: string;
   jobTitle: string;
   about: string;
   checkPassword: (password: string) => string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const UserSchema: Schema<IUserSchema> = new Schema(
@@ -54,7 +56,7 @@ const UserSchema: Schema<IUserSchema> = new Schema(
       required: true,
     },
   },
-  { timestamp: true, versionKey: false, toObject: { useProjection: true } }
+  { timestamps: true, versionKey: false, toObject: { useProjection: true } }
 );
 
 UserSchema.methods.checkPassword = function (password: string) {
