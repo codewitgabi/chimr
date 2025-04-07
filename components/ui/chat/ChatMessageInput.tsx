@@ -1,14 +1,23 @@
 "use client";
 
 import { socket } from "@/lib/socket";
+import { IChatHistory, IChatMessage } from "@/types/chat.types";
 import useAppStore from "@/utils/store";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
+
+const currentUser = {
+  _id: "67f126dac0b8fa775dc666dd",
+  username: "Gabriel Michael Ojomakpene",
+  profilePic: "avatar-1",
+};
 
 function ChatMessageInput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [message, setMessage] = useState("");
   const selectedContact = useAppStore((state) => state.selectedContact);
+  const setChatHistory = useAppStore((state) => state.setChatHistory);
+  const chatHistory = useAppStore((state) => state.chatHistory);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
@@ -23,6 +32,32 @@ function ChatMessageInput() {
     // Only send message when there is a selected contact and message length is greater than 1
 
     if (message.length > 1 && selectedContact) {
+      // Create temporary message object for immediate display
+
+      const tempMessage: IChatMessage = {
+        _id: `temp-${Date.now()}`,
+        sender: currentUser,
+        receiver: {
+          _id: selectedContact.contactId,
+          username: selectedContact.username,
+          profilePic: selectedContact.profilePic as string,
+        },
+        message: message,
+        isRead: false,
+        createdAt: new Date().toISOString(),
+      };
+
+      // Optimistically update UI
+
+      const updatedChatHistory: IChatHistory = {
+        ...chatHistory,
+        totalCount: chatHistory.totalCount + 1,
+        hasMore: chatHistory.hasMore || chatHistory.totalCount > 20,
+        messages: [...chatHistory.messages, tempMessage],
+      };
+
+      setChatHistory(updatedChatHistory);
+
       socket.emit("send_message", {
         message,
         receiverId: selectedContact.contactId,
@@ -33,6 +68,37 @@ function ChatMessageInput() {
       setMessage("");
     }
   };
+
+  useEffect(() => {
+    function onMessageSent({
+      _id,
+      isRead,
+      createdAt,
+      message,
+    }: {
+      _id: string;
+      message: string;
+      isRead: boolean;
+      createdAt: string;
+    }) {
+      const updatedChatHistory: IChatHistory = {
+        ...chatHistory,
+        messages: chatHistory.messages.map((msg) =>
+          msg._id.startsWith("temp-") && msg.message === message
+            ? { ...msg, _id, isRead, createdAt }
+            : msg
+        ),
+      };
+
+      setChatHistory(updatedChatHistory);
+    }
+
+    socket.on("message_sent", onMessageSent);
+
+    return () => {
+      socket.off("message_sent", onMessageSent);
+    };
+  });
 
   return (
     <div className="bg-primary sticky -bottom-2 left-4 w-full right-4 flex items-end rounded-2xl">

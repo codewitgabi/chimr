@@ -2,7 +2,7 @@
 
 import { socket } from "@/lib/socket";
 import { IChatContact } from "@/types/chat.types";
-import { parseTimestamp } from "@/utils/parseTimestamp";
+import { formatChatTimestamp } from "@/utils/parseTimestamp";
 import useAppStore from "@/utils/store";
 import Image from "next/image";
 
@@ -55,21 +55,21 @@ function ChatContactCard({
             height={40}
           />
           <div className="">
-            <h1 className="line-clamp-1">{username}</h1>
+            <h1 className="line-clamp-1 text-sm">{username}</h1>
             <span className="text-xs opacity-80 line-clamp-1">{jobTitle}</span>
           </div>
         </div>
 
         {timestamp && (
-          <span className="text-xs shrink-0 opacity-80">
-            {parseTimestamp(timestamp)}
+          <span className="text-[0.6rem] shrink-0 opacity-80 font-bold">
+            {formatChatTimestamp(timestamp)}
           </span>
         )}
       </div>
 
       {/* Message preview text */}
 
-      <div className="mt-6 flex items-center gap-4 justify-between">
+      <div className="mt-4 flex items-center gap-4 justify-between">
         <p className="text-sm line-clamp-1">
           {lastMessage ? lastMessage : "Start new conversation"}
         </p>

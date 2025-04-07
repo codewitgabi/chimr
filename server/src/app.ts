@@ -21,6 +21,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",
+      "http://localhost:3001",
       "http://localhost:5500",
       "http://46.101.100.35:3000",
       "https://closely-notable-mongoose.ngrok-free.app",
@@ -98,8 +99,7 @@ io.on("connection", async (socket: TExtendedSocket) => {
 
           if (receiverUser) {
             io.to(receiverUser.socketId).emit("new_message", {
-              message: savedMessage,
-              sender: user,
+              ...savedMessage,
             });
           }
 

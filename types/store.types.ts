@@ -7,7 +7,7 @@ export type State = {
   selectedContact: IChatContact | null;
   isSocketConnected: boolean;
   contacts: Array<IChatContact>;
-  chatHistory: IChatHistory | null;
+  chatHistory: IChatHistory;
 };
 
 export type StateAction = {
@@ -16,5 +16,5 @@ export type StateAction = {
   setSelectContact: (contact: IChatContact | null) => void;
   setIsSocketConnected: (value: boolean) => void;
   setContacts: (contacts: Array<IChatContact>) => void;
-  setChatHistory: (chatHistory: IChatHistory | null) => void;
+  setChatHistory: (chatHistory: IChatHistory) => void;
 };

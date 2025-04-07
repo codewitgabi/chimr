@@ -9,7 +9,13 @@ const useAppStore = create<State & StateAction>((set) => ({
   selectedContact: null,
   isSocketConnected: false,
   contacts: [],
-  chatHistory: null,
+  chatHistory: {
+    page: 1,
+    limit: 20,
+    totalCount: 0,
+    hasMore: false,
+    messages: [],
+  },
 
   // State actions
 
