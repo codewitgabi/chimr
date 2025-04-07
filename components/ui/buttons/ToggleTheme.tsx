@@ -1,9 +1,10 @@
 "use client";
 
-import { HiOutlineMoon } from "react-icons/hi2";
-import { WiDaySunny } from "react-icons/wi";
 import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
+import SunIcon from "@/assets/icons/sun.svg";
+import MoonIcon from "@/assets/icons/moon.svg";
+import Image from "next/image";
 
 function ToggleThemeButton() {
   const { theme, setTheme } = useTheme();
@@ -22,12 +23,26 @@ function ToggleThemeButton() {
   }
 
   return (
-    <button className="cursor-pointer" onClick={handleClick}>
-      {theme === "light" ? (
-        <HiOutlineMoon className="text-2xl" />
-      ) : (
-        <WiDaySunny className="text-2xl" />
-      )}
+    <button
+      className={`cursor-pointer flex items-center gap-4 ${
+        theme === "light" ? "bg-[#efefef]" : "bg-[#64666D]"
+      } rounded-full p-2 transition-all duration-300`}
+      onClick={handleClick}
+    >
+      <Image
+        src={SunIcon}
+        alt="sun-icon"
+        width={20}
+        height={20}
+        className={`${theme === "light" ? "bg-white" : ""} rounded-full p-1`}
+      />
+      <Image
+        src={MoonIcon}
+        alt="moon-icon"
+        width={20}
+        height={20}
+        className={`${theme === "dark" ? "bg-white" : ""} rounded-full p-1`}
+      />
     </button>
   );
 }

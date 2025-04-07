@@ -16,6 +16,7 @@ export const CreateUserSchema = [
       "avatar-4",
       "avatar-5",
       "avatar-6",
+      "avatar-7",
     ])
     .withMessage("Invalid avatar"),
   body("jobTitle")

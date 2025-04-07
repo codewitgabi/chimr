@@ -25,7 +25,7 @@ function ContactProfileDetail() {
             <p className="opacity-60 text-xs">{selectedContact?.jobTitle}</p>
           </div>
 
-          <p className="text-xs mt-6">{selectedContact?.about}</p>
+          <p className="text-sm mt-6">{selectedContact?.about}</p>
         </div>
       ) : (
         "Loading..."

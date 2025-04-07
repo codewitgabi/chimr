@@ -70,19 +70,19 @@ function ChatMessageInput() {
   };
 
   return (
-    <div className="bg-primary sticky -bottom-2 left-4 w-full right-4 flex items-end rounded-2xl">
+    <div className="sticky -bottom-2 left-0 w-full right-0 flex items-end rounded-2xl">
       <textarea
         ref={textareaRef}
         name="chatMessage"
         id="chatMessage"
         rows={1}
-        className="resize-none max-h-[100px] rounded-lg outline-none focus:border-blue-300 p-4 inline-block mt-4 flex-1"
+        className="bg-primary overflow-hidden resize-none max-h-[100px] rounded-lg outline-none focus:border-blue-300 p-4 inline-block mt-4 flex-1"
         value={message}
         onChange={handleChange}
       ></textarea>
 
       <button
-        className="rounded-full bg-secondary p-3 -rotate-45 cursor-pointer"
+        className="rounded-full p-3 -rotate-45 cursor-pointer"
         onClick={handleSendMessage}
       >
         <AiOutlineSend className="text-2xl" />

@@ -17,8 +17,11 @@ function ChatContactCard({
   about,
 }: Omit<IChatContact, "isRead">) {
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
+  const selectedContact = useAppStore((state) => state.selectedContact);
 
   const handleClick = () => {
+    console.log("Clicked");
+
     setSelectedContact({
       contactId,
       username,
@@ -42,9 +45,13 @@ function ChatContactCard({
 
   return (
     <div
-      className="p-4 hover:bg-hover-effect transition-all duration-300 cursor-pointer"
+      className={`p-4 hover:bg-hover-effect ${
+        selectedContact?.contactId === contactId ? "bg-hover-effect" : ""
+      } transition-all duration-300 cursor-pointer`}
       role="button"
-      onClick={handleClick}
+      onClick={
+        selectedContact?.contactId !== contactId ? handleClick : undefined
+      }
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-2">

@@ -3,6 +3,11 @@ import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import SocketProvider from "@/components/providers/SocketProvider";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 
 const font = Josefin_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700"],

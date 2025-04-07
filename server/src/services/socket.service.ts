@@ -140,16 +140,6 @@ class SocketService {
         .populate("receiver", "username profilePic") // Adjust fields as needed
         .lean(); // For better performance
 
-      // Mark messages as read if they were sent to the current user
-      await ChatMessage.updateMany(
-        {
-          sender: contactObjectId,
-          receiver: userObjectId,
-          isRead: false,
-        },
-        { isRead: true }
-      );
-
       return {
         messages: messages.reverse(), // Return in chronological order
         totalCount,

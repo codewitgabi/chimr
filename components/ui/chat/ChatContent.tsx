@@ -68,7 +68,7 @@ function ChatContent() {
 
       <div className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col">
         <div className="grow overflow-y-auto">
-          {chatHistory &&
+          {chatHistory.messages.length > 0 ? (
             chatHistory.messages.map(
               ({ _id, createdAt, sender: { _id: senderId }, message }) => (
                 <ChatBubble
@@ -82,7 +82,12 @@ function ChatContent() {
                   }
                 />
               )
-            )}
+            )
+          ) : (
+            <div className="text-center flex items-center justify-center">
+              <h2 className="">Start a new conversation</h2>
+            </div>
+          )}
         </div>
 
         {/* Text input field */}
