@@ -14,6 +14,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
   const setChatHistory = useAppStore((state) => state.setChatHistory);
   const contacts = useAppStore((state) => state.contacts);
+  const chatHistory = useAppStore((state) => state.chatHistory);
 
   useEffect(() => {
     function onConnect() {
@@ -79,11 +80,37 @@ function SocketProvider({ children }: { children: ReactNode }) {
       setContacts(newContacts);
     }
 
+    function onMessageSent({
+      _id,
+      isRead,
+      createdAt,
+      message,
+    }: {
+      _id: string;
+      message: string;
+      isRead: boolean;
+      createdAt: string;
+    }) {
+      const updatedChatHistory: IChatHistory = {
+        ...chatHistory,
+        totalCount: chatHistory.totalCount + 1,
+        hasMore: chatHistory.hasMore || chatHistory.totalCount > 20,
+        messages: chatHistory.messages.map((msg) =>
+          msg._id.startsWith("temp-") && msg.message === message
+            ? { ...msg, _id, isRead, createdAt }
+            : msg
+        ),
+      };
+
+      setChatHistory(updatedChatHistory);
+    }
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("fetch_contacts", onFetchContacts);
     socket.on("chat_history", onGetChatHistory);
     socket.on("update_contact", onUpdateContact);
+    socket.on("message_sent", onMessageSent);
 
     return () => {
       socket.off("connect", onConnect);
@@ -91,6 +118,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
       socket.off("fetch_contacts", onFetchContacts);
       socket.off("chat_history", onGetChatHistory);
       socket.off("update_contact", onUpdateContact);
+      socket.off("message_sent", onMessageSent);
     };
   }, [
     setIsSocketConnected,
@@ -98,6 +126,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     setSelectedContact,
     setChatHistory,
     contacts,
+    chatHistory,
   ]);
 
   return <>{children}</>;

@@ -3,7 +3,7 @@
 import { socket } from "@/lib/socket";
 import { IChatHistory, IChatMessage } from "@/types/chat.types";
 import useAppStore from "@/utils/store";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 
 const currentUser = {
@@ -68,37 +68,6 @@ function ChatMessageInput() {
       setMessage("");
     }
   };
-
-  useEffect(() => {
-    function onMessageSent({
-      _id,
-      isRead,
-      createdAt,
-      message,
-    }: {
-      _id: string;
-      message: string;
-      isRead: boolean;
-      createdAt: string;
-    }) {
-      const updatedChatHistory: IChatHistory = {
-        ...chatHistory,
-        messages: chatHistory.messages.map((msg) =>
-          msg._id.startsWith("temp-") && msg.message === message
-            ? { ...msg, _id, isRead, createdAt }
-            : msg
-        ),
-      };
-
-      setChatHistory(updatedChatHistory);
-    }
-
-    socket.on("message_sent", onMessageSent);
-
-    return () => {
-      socket.off("message_sent", onMessageSent);
-    };
-  });
 
   return (
     <div className="bg-primary sticky -bottom-2 left-4 w-full right-4 flex items-end rounded-2xl">
