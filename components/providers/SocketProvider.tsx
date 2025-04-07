@@ -1,7 +1,7 @@
 "use client";
 
 import { socket } from "@/lib/socket";
-import { IChatContact, IChatHistory } from "@/types/chat.types";
+import { IChatContact, IChatHistory, IChatMessage } from "@/types/chat.types";
 import getProfilePicture from "@/utils/profilePicture.mapping";
 import useAppStore from "@/utils/store";
 import { ReactNode, useEffect } from "react";
@@ -12,6 +12,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
   );
   const setContacts = useAppStore((state) => state.setContacts);
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
+  const selectedContact = useAppStore((state) => state.selectedContact);
   const setChatHistory = useAppStore((state) => state.setChatHistory);
   const contacts = useAppStore((state) => state.contacts);
   const chatHistory = useAppStore((state) => state.chatHistory);
@@ -105,12 +106,57 @@ function SocketProvider({ children }: { children: ReactNode }) {
       setChatHistory(updatedChatHistory);
     }
 
+    function onNewMessage({
+      _id,
+      receiver,
+      message,
+      isRead,
+      createdAt,
+      sender
+    }: {
+      _id: string;
+      message: string;
+      isRead: boolean;
+      createdAt: string;
+      receiver: string;
+      sender: string;
+    }) {
+      if (selectedContact) {
+        const newMessage: IChatMessage = {
+          _id,
+          sender: {
+            _id: sender,
+            username: selectedContact?.username,
+            profilePic: selectedContact?.profilePic as string,
+          },
+          receiver: {
+            _id: receiver,
+            username: "Gabriel Michael Ojomakpene",
+            profilePic: "avatar-1",
+          },
+          message,
+          isRead,
+          createdAt,
+        };
+
+        const updatedChatHistory: IChatHistory = {
+          ...chatHistory,
+          totalCount: chatHistory.totalCount + 1,
+          hasMore: chatHistory.hasMore || chatHistory.totalCount > 20,
+          messages: [...chatHistory.messages, newMessage],
+        };
+
+        setChatHistory(updatedChatHistory);
+      }
+    }
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("fetch_contacts", onFetchContacts);
     socket.on("chat_history", onGetChatHistory);
     socket.on("update_contact", onUpdateContact);
     socket.on("message_sent", onMessageSent);
+    socket.on("new_message", onNewMessage);
 
     return () => {
       socket.off("connect", onConnect);
@@ -119,6 +165,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
       socket.off("chat_history", onGetChatHistory);
       socket.off("update_contact", onUpdateContact);
       socket.off("message_sent", onMessageSent);
+      socket.off("new_message", onNewMessage);
     };
   }, [
     setIsSocketConnected,
@@ -127,6 +174,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     setChatHistory,
     contacts,
     chatHistory,
+    selectedContact,
   ]);
 
   return <>{children}</>;

@@ -89,7 +89,7 @@ class SocketService {
         message,
       });
 
-      return newMessage;
+      return newMessage.toObject();
     } catch (e) {
       throw new ApiError(
         (e as { message: string })?.message,
