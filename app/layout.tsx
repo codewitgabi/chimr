@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className} antialiased`}>
-        <ThemeProvider defaultTheme="light" enableSystem={false}>
+        <ThemeProvider defaultTheme="dark" enableSystem>
           <SocketProvider>{children}</SocketProvider>
         </ThemeProvider>
 

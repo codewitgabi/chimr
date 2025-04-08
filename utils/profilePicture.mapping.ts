@@ -6,6 +6,15 @@ import Avatar5 from "@/assets/avatars/avatar-5.png";
 import Avatar6 from "@/assets/avatars/avatar-6.png";
 import Avatar7 from "@/assets/avatars/avatar-7.png";
 
+export type TProfilePicture =
+  | "avatar-1"
+  | "avatar-2"
+  | "avatar-3"
+  | "avatar-4"
+  | "avatar-5"
+  | "avatar-6"
+  | "avatar-7";
+
 const profilePictureMapping = {
   "avatar-1": Avatar1,
   "avatar-2": Avatar2,
@@ -16,16 +25,7 @@ const profilePictureMapping = {
   "avatar-7": Avatar7,
 };
 
-function getProfilePicture(
-  value:
-    | "avatar-1"
-    | "avatar-2"
-    | "avatar-3"
-    | "avatar-4"
-    | "avatar-5"
-    | "avatar-6"
-    | "avatar-7"
-) {
+function getProfilePicture(value: TProfilePicture) {
   return profilePictureMapping[value];
 }
 
