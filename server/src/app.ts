@@ -127,8 +127,9 @@ io.on("connection", async (socket: TExtendedSocket) => {
             );
           }
         } catch (error) {
-          console.error(error);
-          socket.emit("message_error", { error: "Failed to send message" });
+          socket.emit("socket_error", {
+            error: `Failed to send message: ${error}"`,
+          });
         }
       }
     );
@@ -163,8 +164,28 @@ io.on("connection", async (socket: TExtendedSocket) => {
         } catch (error) {
           console.error(error);
 
-          socket.emit("chat_history_error", {
-            error: "Failed to fetch message history",
+          socket.emit("socket_error", {
+            error: "Failed to fetch chat history",
+          });
+        }
+      }
+    );
+
+    // Handle mark as read event
+
+    socket.on(
+      "mark_messages_as_read",
+      async ({ contactId }: { contactId: string }) => {
+        try {
+          const result = await socketService.markMessagesAsRead({
+            userId: userIdStr,
+            contactId,
+          });
+
+          socket.emit("messages_marked_as_read", result);
+        } catch (error) {
+          socket.emit("socket_error", {
+            error: `Failed to mark messages as read: ${error}`,
           });
         }
       }
@@ -178,7 +199,9 @@ io.on("connection", async (socket: TExtendedSocket) => {
       io.emit("active_users", ACTIVE_USERS);
     });
   } catch (error) {
-    console.error("Socket connection error:", error);
+    socket.emit("socket_error", {
+      error: `Socket connection error: ${error}`,
+    });
   }
 });
 

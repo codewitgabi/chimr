@@ -204,6 +204,34 @@ class SocketService {
       throw new Error("Failed to get updated contact information");
     }
   }
+
+  async markMessagesAsRead({
+    userId,
+    contactId,
+  }: {
+    userId: string;
+    contactId: string;
+  }) {
+    try {
+      // Convert string IDs to ObjectIds
+
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+      const contactObjectId = new mongoose.Types.ObjectId(contactId);
+
+      const { acknowledged, modifiedCount } = await ChatMessage.updateMany(
+        { sender: contactObjectId, receiver: userObjectId },
+        { $set: { isRead: true } }
+      );
+
+      return {
+        acknowledged,
+        modifiedCount,
+      };
+    } catch (error) {
+      console.error("Error getting updated contact:", error);
+      throw new Error("Failed to get updated contact information");
+    }
+  }
 }
 
 const socketService = new SocketService();

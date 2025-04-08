@@ -11,8 +11,6 @@ function ChatSection() {
     // Connect to socket
 
     socket.connect();
-
-    console.log("Socket connected")
   }, []);
 
   return (

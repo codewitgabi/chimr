@@ -46,3 +46,9 @@ html {
   background: var(--primary);
   color: var(--foreground);
 }
+
+@media only screen and (min-width: 655px) {
+  .drawer {
+    display: none;
+  }
+}

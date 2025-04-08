@@ -31,7 +31,7 @@ function ChatMessageInput() {
   const handleSendMessage = () => {
     // Only send message when there is a selected contact and message length is greater than 1
 
-    if (message.length > 1 && selectedContact) {
+    if (message.trim().length > 1 && selectedContact) {
       // Create temporary message object for immediate display
 
       const tempMessage: IChatMessage = {
@@ -70,19 +70,19 @@ function ChatMessageInput() {
   };
 
   return (
-    <div className="sticky -bottom-2 left-0 w-full right-0 flex items-end rounded-2xl">
+    <div className="sticky -bottom-2 left-0 w-full right-0 flex items-end rounded-2xl max-[655px]:relative max-[655px]:bottom-auto max-[655px]:right-auto max-[655px]:left-auto max-[655px]:overflow-hidden max-[655px]:rounded-none max-[655px]:gap-2">
       <textarea
         ref={textareaRef}
         name="chatMessage"
         id="chatMessage"
         rows={1}
-        className="bg-primary overflow-hidden resize-none max-h-[100px] rounded-lg outline-none focus:border-blue-300 p-4 inline-block mt-4 flex-1"
+        className="bg-primary overflow-hidden resize-none max-h-[100px] rounded-lg outline-none focus:border-blue-300 p-4 inline-block flex-1"
         value={message}
         onChange={handleChange}
       ></textarea>
 
       <button
-        className="rounded-full p-3 -rotate-45 cursor-pointer"
+        className="rounded-full p-3 max-[655px]: -rotate-45 cursor-pointer"
         onClick={handleSendMessage}
       >
         <AiOutlineSend className="text-2xl" />
