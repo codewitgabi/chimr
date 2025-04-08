@@ -5,6 +5,7 @@ import { IChatContact, IChatHistory, IChatMessage } from "@/types/chat.types";
 import getProfilePicture from "@/utils/profilePicture.mapping";
 import useAppStore from "@/utils/store";
 import { ReactNode, useEffect } from "react";
+import { toast } from "sonner";
 
 function SocketProvider({ children }: { children: ReactNode }) {
   const setIsSocketConnected = useAppStore(
@@ -26,6 +27,11 @@ function SocketProvider({ children }: { children: ReactNode }) {
     function onDisconnect() {
       console.log("Socket disconnected");
       setIsSocketConnected(false);
+    }
+
+    function onSocketError({ error }: { error: string }) {
+      console.error({ error });
+      toast.error(error);
     }
 
     function onFetchContacts(contacts: Array<IChatContact>) {
@@ -112,7 +118,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
       message,
       isRead,
       createdAt,
-      sender
+      sender,
     }: {
       _id: string;
       message: string;
@@ -121,7 +127,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
       receiver: string;
       sender: string;
     }) {
-      if (selectedContact) {
+      if (selectedContact && selectedContact.contactId === sender) {
         const newMessage: IChatMessage = {
           _id,
           sender: {
@@ -148,10 +154,17 @@ function SocketProvider({ children }: { children: ReactNode }) {
 
         setChatHistory(updatedChatHistory);
       }
+
+      // Send notification for new message
+
+      toast("New message", {
+        description: message,
+      });
     }
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
+    socket.on("socket_error", onSocketError);
     socket.on("fetch_contacts", onFetchContacts);
     socket.on("chat_history", onGetChatHistory);
     socket.on("update_contact", onUpdateContact);
@@ -161,6 +174,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
+      socket.off("socket_error", onSocketError);
       socket.off("fetch_contacts", onFetchContacts);
       socket.off("chat_history", onGetChatHistory);
       socket.off("update_contact", onUpdateContact);

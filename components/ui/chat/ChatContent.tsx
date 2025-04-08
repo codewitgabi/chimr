@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import useAppStore from "@/utils/store";
 import Image, { StaticImageData } from "next/image";
 import ChatMessageInput from "./ChatMessageInput";
@@ -8,6 +9,21 @@ import ChatBubble from "./ChatBubble";
 function ChatContent() {
   const selectedContact = useAppStore((state) => state.selectedContact);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Improved scroll to bottom function
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Scroll to bottom when a contact is selected or messages change
+  useEffect(() => {
+    if (selectedContact && chatHistory.messages.length > 0) {
+      // Use a small timeout to ensure DOM is updated before scrolling
+      setTimeout(scrollToBottom, 50);
+    }
+  }, [selectedContact, chatHistory.messages.length]);
 
   return (
     <div className="flex-1 col-span-2 overflow-y-auto flex flex-col max-[655px]:hidden">
@@ -66,23 +82,30 @@ function ChatContent() {
 
       {/* Chat content */}
 
-      <div className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col">
+      <div
+        className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col"
+        ref={chatContainerRef}
+      >
         <div className="grow overflow-y-auto">
           {chatHistory.messages.length > 0 ? (
-            chatHistory.messages.map(
-              ({ _id, createdAt, sender: { _id: senderId }, message }) => (
-                <ChatBubble
-                  key={_id}
-                  message={message}
-                  timestamp={createdAt}
-                  type={
-                    senderId === "67f126dac0b8fa775dc666dd"
-                      ? "sender"
-                      : "receiver"
-                  }
-                />
-              )
-            )
+            <>
+              {chatHistory.messages.map(
+                ({ _id, createdAt, sender: { _id: senderId }, message }) => (
+                  <ChatBubble
+                    key={_id}
+                    message={message}
+                    timestamp={createdAt}
+                    type={
+                      senderId === "67f126dac0b8fa775dc666dd"
+                        ? "sender"
+                        : "receiver"
+                    }
+                  />
+                )
+              )}
+              {/* This is an empty div that we'll scroll to */}
+              <div ref={messagesEndRef} />
+            </>
           ) : (
             <div className="text-center flex items-center justify-center">
               <h2 className="">Start a new conversation</h2>

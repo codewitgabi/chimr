@@ -22,6 +22,7 @@ function ChatContactCard({
   const selectedContact = useAppStore((state) => state.selectedContact);
   const [openMobileChatContent, setOpenMobileChatContent] =
     useState<boolean>(false);
+  const [localUnreadCount, setLocalUnreadCount] = useState<number>(unreadCount);
 
   const handleClick = () => {
     setSelectedContact({
@@ -32,7 +33,7 @@ function ChatContactCard({
       about,
       timestamp,
       lastMessage,
-      unreadCount,
+      unreadCount: 0,
       isRead: false,
     });
 
@@ -47,6 +48,14 @@ function ChatContactCard({
       limit: 20,
       page: 1,
     });
+
+    // Mark messages as read
+
+    socket.emit("mark_messages_as_read", { contactId });
+
+    // Update contact and change unreadCount to 0
+
+    setLocalUnreadCount(0);
   };
 
   return (
@@ -89,9 +98,9 @@ function ChatContactCard({
           <p className="text-sm line-clamp-1">
             {lastMessage ? lastMessage : "Start new conversation"}
           </p>
-          {unreadCount > 0 && (
+          {localUnreadCount > 0 && (
             <p className="text-xs bg-primary pt-0.5 px-1 rounded-full">
-              {unreadCount}
+              {localUnreadCount}
             </p>
           )}
         </div>

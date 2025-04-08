@@ -226,6 +226,7 @@ class SocketService {
       return {
         acknowledged,
         modifiedCount,
+        contactId
       };
     } catch (error) {
       console.error("Error getting updated contact:", error);

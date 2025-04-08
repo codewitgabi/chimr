@@ -6,6 +6,8 @@ import useAppStore from "@/utils/store";
 import ChatBubble from "./chat/ChatBubble";
 import ChatMessageInput from "./chat/ChatMessageInput";
 import { IoChevronBackSharp } from "react-icons/io5";
+import { useRef, useEffect } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface MobileChatContentDrawerProps {
   open: boolean;
@@ -19,11 +21,41 @@ function MobileChatContentDrawer({
   const selectedContact = useAppStore((state) => state.selectedContact);
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  // Check if the screen width is below or equal to 655px
+  const isMobile = useMediaQuery("(max-width: 655px)");
+
+  // Improved scroll to bottom function
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Scroll to bottom when a contact is selected or messages change
+  useEffect(() => {
+    if (selectedContact && chatHistory.messages.length > 0) {
+      setTimeout(scrollToBottom, 50);
+    }
+  }, [selectedContact, chatHistory.messages.length]);
 
   const handleClose = () => {
     setOpenMobileChatContent(false);
     setSelectedContact(null);
   };
+
+  // Close drawer automatically when screen size changes from mobile to desktop
+  
+  useEffect(() => {
+    if (!isMobile && open) {
+      setOpenMobileChatContent(false);
+    }
+  }, [isMobile, open, setOpenMobileChatContent]);
+
+  // If not mobile, don't render the drawer at all
+
+  if (!isMobile) {
+    return null;
+  }
 
   return (
     <>
@@ -58,28 +90,35 @@ function MobileChatContentDrawer({
           <div className="flex-1 relative overflow-y-auto">
             {/* Chat content */}
 
-            <div className="bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col">
+            <div
+              className="bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col"
+              ref={chatContainerRef}
+            >
               <div className="grow overflow-y-auto">
                 {chatHistory.messages.length > 0 ? (
-                  chatHistory.messages.map(
-                    ({
-                      _id,
-                      createdAt,
-                      sender: { _id: senderId },
-                      message,
-                    }) => (
-                      <ChatBubble
-                        key={_id}
-                        message={message}
-                        timestamp={createdAt}
-                        type={
-                          senderId === "67f126dac0b8fa775dc666dd"
-                            ? "sender"
-                            : "receiver"
-                        }
-                      />
-                    )
-                  )
+                  <>
+                    {chatHistory.messages.map(
+                      ({
+                        _id,
+                        createdAt,
+                        sender: { _id: senderId },
+                        message,
+                      }) => (
+                        <ChatBubble
+                          key={_id}
+                          message={message}
+                          timestamp={createdAt}
+                          type={
+                            senderId === "67f126dac0b8fa775dc666dd"
+                              ? "sender"
+                              : "receiver"
+                          }
+                        />
+                      )
+                    )}
+                    {/* This is an empty div that we'll scroll to */}
+                    <div ref={messagesEndRef} />
+                  </>
                 ) : (
                   <div className="text-center flex items-center justify-center">
                     <h2 className="">Start a new conversation</h2>

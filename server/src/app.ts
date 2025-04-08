@@ -24,6 +24,7 @@ const io = new Server(server, {
       "http://localhost:3001",
       "http://localhost:5500",
       "http://46.101.100.35:3000",
+      "http://192.168.0.16:3001",
       "https://closely-notable-mongoose.ngrok-free.app",
     ],
   },
@@ -61,6 +62,8 @@ io.on("connection", async (socket: TExtendedSocket) => {
       user,
       socketId: SOCKET_ID,
     });
+
+    console.log({ ACTIVE_USERS })
 
     io.emit("active_users", ACTIVE_USERS);
 
@@ -197,6 +200,8 @@ io.on("connection", async (socket: TExtendedSocket) => {
       ACTIVE_USERS = ACTIVE_USERS.filter((user) => user.socketId !== socket.id);
 
       io.emit("active_users", ACTIVE_USERS);
+
+      console.log({ ACTIVE_USERS });
     });
   } catch (error) {
     socket.emit("socket_error", {

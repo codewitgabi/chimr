@@ -3,6 +3,7 @@ import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import SocketProvider from "@/components/providers/SocketProvider";
+import { Toaster } from 'sonner';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -30,6 +31,10 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="light" enableSystem={false}>
           <SocketProvider>{children}</SocketProvider>
         </ThemeProvider>
+
+        {/* Toast */}
+
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );
