@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import authService from "@/services/auth.service";
 import { IUser } from "@/types/user.types";
 import { useRouter } from "next/navigation";
+import api from "@/lib/api";
 
 const profileImages: Array<TProfilePicture> = [
   "avatar-1",
@@ -37,22 +38,14 @@ function SignupForm() {
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     try {
-      const api = await fetch("http://localhost:7000/api/v1/auth/register", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const response = await api.json();
-
+      const response = await api.post("/auth/register", JSON.stringify(data));
       const {
         user: { username, _id, jobTitle, about, profilePic },
         accessToken,
       }: {
         accessToken: string;
         user: Exclude<IUser, "id"> & { _id: string };
-      } = response.data;
+      } = response.data.data;
 
       // Set access token
 
@@ -69,7 +62,10 @@ function SignupForm() {
   };
 
   return (
-    <form className="max-w-[380px] mt-32 py-12" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="max-w-[380px] mt-32 py-12"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <legend className="font-bold text-4xl">
         Create an account to get started
       </legend>

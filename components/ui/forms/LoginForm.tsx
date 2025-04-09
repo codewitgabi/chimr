@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import authService from "@/services/auth.service";
 import { IUser } from "@/types/user.types";
 import { useRouter } from "next/navigation";
+import api from "@/lib/api";
 
 function LoginForm() {
   const {
@@ -17,22 +18,14 @@ function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
     try {
-      const api = await fetch("http://localhost:7000/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const response = await api.json();
-
+      const response = await api.post("/auth/login", JSON.stringify(data));
       const {
         user: { username, _id, jobTitle, about, profilePic },
         accessToken,
       }: {
         accessToken: string;
         user: Exclude<IUser, "id"> & { _id: string };
-      } = response.data;
+      } = response.data.data;
 
       // Set access token
 
