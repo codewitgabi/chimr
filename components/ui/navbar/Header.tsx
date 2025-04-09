@@ -1,18 +1,25 @@
+"use client";
+
 import Image from "next/image";
-import DefaultAvatar from "@/assets/avatars/avatar-7.png";
 import ToggleThemeButton from "../buttons/ToggleTheme";
+import useAuth from "@/hooks/useAuth";
+import useAppStore from "@/utils/store";
+import getProfilePicture, {
+  TProfilePicture,
+} from "@/utils/profilePicture.mapping";
 
 interface HeaderProps {
   title: string;
 }
 
 function Header({ title }: HeaderProps) {
+  useAuth();
+  const user = useAppStore((state) => state.user);
+
   return (
     <header className="shrink-0">
       <nav className="flex items-center justify-between gap-12">
-        <h1 className="font-semibold text-lg">
-          {title}
-        </h1>
+        <h1 className="font-semibold text-lg">{title}</h1>
 
         <div className="flex items-center gap-4">
           <ToggleThemeButton />
@@ -38,16 +45,16 @@ function Header({ title }: HeaderProps) {
             />
           </svg>
 
-          <Image
-            src={DefaultAvatar}
-            alt="default-avatar"
-            width={40}
-            height={40}
-          />
+          {user?.profilePic && (
+            <Image
+              src={getProfilePicture(user?.profilePic as TProfilePicture)}
+              alt="default-avatar"
+              width={40}
+              height={40}
+            />
+          )}
 
-          <h1 className="text-sm max-[425px]:hidden">
-            Leslie Alexander
-          </h1>
+          <h1 className="text-sm max-[425px]:hidden">{user?.username}</h1>
         </div>
       </nav>
     </header>

@@ -9,6 +9,7 @@ import ChatBubble from "./ChatBubble";
 function ChatContent() {
   const selectedContact = useAppStore((state) => state.selectedContact);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const user = useAppStore((state) => state.user);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -95,11 +96,7 @@ function ChatContent() {
                     key={_id}
                     message={message}
                     timestamp={createdAt}
-                    type={
-                      senderId === "67f126dac0b8fa775dc666dd"
-                        ? "sender"
-                        : "receiver"
-                    }
+                    type={senderId === user?.id ? "sender" : "receiver"}
                   />
                 )
               )}

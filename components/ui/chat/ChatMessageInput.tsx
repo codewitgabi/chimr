@@ -6,18 +6,18 @@ import useAppStore from "@/utils/store";
 import { useRef, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 
-const currentUser = {
-  _id: "67f126dac0b8fa775dc666dd",
-  username: "Gabriel Michael Ojomakpene",
-  profilePic: "avatar-1",
-};
-
 function ChatMessageInput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [message, setMessage] = useState("");
   const selectedContact = useAppStore((state) => state.selectedContact);
   const setChatHistory = useAppStore((state) => state.setChatHistory);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const user = useAppStore((state) => state.user);
+  const currentUser = {
+    _id: user?.id as string,
+    username: user?.username as string,
+    profilePic: user?.profilePic as string,
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);

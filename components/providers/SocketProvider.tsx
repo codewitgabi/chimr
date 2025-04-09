@@ -1,13 +1,17 @@
 "use client";
 
+import useAuth from "@/hooks/useAuth";
 import { socket } from "@/lib/socket";
 import { IChatContact, IChatHistory, IChatMessage } from "@/types/chat.types";
-import getProfilePicture from "@/utils/profilePicture.mapping";
+import getProfilePicture, {
+  TProfilePicture,
+} from "@/utils/profilePicture.mapping";
 import useAppStore from "@/utils/store";
 import { ReactNode, useEffect } from "react";
 import { toast } from "sonner";
 
 function SocketProvider({ children }: { children: ReactNode }) {
+  useAuth();
   const setIsSocketConnected = useAppStore(
     (state) => state.setIsSocketConnected
   );
@@ -17,6 +21,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
   const setChatHistory = useAppStore((state) => state.setChatHistory);
   const contacts = useAppStore((state) => state.contacts);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const user = useAppStore((state) => state.user);
 
   useEffect(() => {
     function onConnect() {
@@ -37,16 +42,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     function onFetchContacts(contacts: Array<IChatContact>) {
       const parsedContacts: IChatContact[] = contacts.map((contact) => ({
         ...contact,
-        profilePic: getProfilePicture(
-          contact.profilePic as
-            | "avatar-1"
-            | "avatar-2"
-            | "avatar-3"
-            | "avatar-4"
-            | "avatar-5"
-            | "avatar-6"
-            | "avatar-7"
-        ),
+        profilePic: getProfilePicture(contact.profilePic as TProfilePicture),
       }));
 
       setContacts(parsedContacts);
@@ -137,8 +133,8 @@ function SocketProvider({ children }: { children: ReactNode }) {
           },
           receiver: {
             _id: receiver,
-            username: "Gabriel Michael Ojomakpene",
-            profilePic: "avatar-1",
+            username: user?.username as string,
+            profilePic: user?.profilePic as TProfilePicture,
           },
           message,
           isRead,
@@ -189,6 +185,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     contacts,
     chatHistory,
     selectedContact,
+    user,
   ]);
 
   return <>{children}</>;
