@@ -16,6 +16,7 @@ const useAppStore = create<State & StateAction>((set) => ({
     hasMore: false,
     messages: [],
   },
+  socket: null,
 
   // State actions
 
@@ -42,6 +43,10 @@ const useAppStore = create<State & StateAction>((set) => ({
 
   setChatHistory: (chatHistory) => {
     set({ chatHistory });
+  },
+
+  setSocket: (socket) => {
+    set({ socket });
   },
 }));
 

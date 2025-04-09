@@ -1,6 +1,5 @@
 "use client";
 
-import { socket } from "@/lib/socket";
 import { IChatHistory, IChatMessage } from "@/types/chat.types";
 import useAppStore from "@/utils/store";
 import { useRef, useState } from "react";
@@ -12,6 +11,7 @@ function ChatMessageInput() {
   const selectedContact = useAppStore((state) => state.selectedContact);
   const setChatHistory = useAppStore((state) => state.setChatHistory);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const socket = useAppStore((state) => state.socket);
   const user = useAppStore((state) => state.user);
   const currentUser = {
     _id: user?.id as string,
@@ -58,7 +58,7 @@ function ChatMessageInput() {
 
       setChatHistory(updatedChatHistory);
 
-      socket.emit("send_message", {
+      socket?.current?.emit("send_message", {
         message,
         receiverId: selectedContact.contactId,
       });

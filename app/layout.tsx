@@ -2,13 +2,11 @@ import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import SocketProvider from "@/components/providers/SocketProvider";
-import { Toaster } from 'sonner';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
+import { Toaster } from "sonner";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const font = Josefin_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -29,7 +27,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.className} antialiased`}>
         <ThemeProvider defaultTheme="dark" enableSystem>
-          <SocketProvider>{children}</SocketProvider>
+          {children}
         </ThemeProvider>
 
         {/* Toast */}

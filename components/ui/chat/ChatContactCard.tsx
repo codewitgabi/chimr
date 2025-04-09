@@ -1,6 +1,6 @@
 "use client";
 
-import { socket } from "@/lib/socket";
+// import { socket } from "@/lib/socket";
 import { IChatContact } from "@/types/chat.types";
 import { formatChatTimestamp } from "@/utils/parseTimestamp";
 import useAppStore from "@/utils/store";
@@ -20,6 +20,7 @@ function ChatContactCard({
 }: Omit<IChatContact, "isRead">) {
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
   const selectedContact = useAppStore((state) => state.selectedContact);
+  const socket = useAppStore((state) => state.socket);
   const [openMobileChatContent, setOpenMobileChatContent] =
     useState<boolean>(false);
   const [localUnreadCount, setLocalUnreadCount] = useState<number>(unreadCount);
@@ -43,7 +44,7 @@ function ChatContactCard({
 
     // Fetch chat history for selected contact
 
-    socket.emit("get_chat_history", {
+    socket?.current?.emit("get_chat_history", {
       contactId,
       limit: 20,
       page: 1,
@@ -51,7 +52,7 @@ function ChatContactCard({
 
     // Mark messages as read
 
-    socket.emit("mark_messages_as_read", { contactId });
+    socket?.current?.emit("mark_messages_as_read", { contactId });
 
     // Update contact and change unreadCount to 0
 

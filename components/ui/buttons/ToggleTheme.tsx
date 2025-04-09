@@ -1,50 +1,42 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
-import SunIcon from "@/assets/icons/sun.svg";
-import MoonIcon from "@/assets/icons/moon.svg";
-import Image from "next/image";
+import { FaMoon } from "react-icons/fa";
+import { LiaSun } from "react-icons/lia";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-function ToggleThemeButton() {
-  const { theme, setTheme } = useTheme();
+const ToggleThemeSlider = () => {
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  const handleClick = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isDark = resolvedTheme === "dark";
 
-  if (!mounted) {
-    return null;
-  }
+  const toggleTheme = () => setTheme(isDark ? "light" : "dark");
 
   return (
     <button
-      className={`cursor-pointer flex items-center gap-4 ${
-        theme === "light" ? "bg-[#efefef]" : "bg-[#64666D]"
-      } rounded-full p-2 transition-all duration-300`}
-      onClick={handleClick}
+      onClick={toggleTheme}
+      className="relative w-[80px] h-[40px] rounded-full bg-secondary flex items-center justify-between px-3 transition-colors duration-300"
     >
-      <Image
-        src={SunIcon}
-        alt="sun-icon"
-        width={20}
-        height={20}
-        className={`${theme === "light" ? "bg-white" : ""} rounded-full p-1`}
-      />
-      <Image
-        src={MoonIcon}
-        alt="moon-icon"
-        width={20}
-        height={20}
-        className={`${theme === "dark" ? "bg-white" : ""} rounded-full p-1`}
+      {/* Sun Icon */}
+      <LiaSun className="text-yellow-500 text-xl z-10" />
+
+      {/* Moon Icon */}
+      <FaMoon className="text-[#4B5563] text-sm z-10" />
+
+      {/* Sliding knob */}
+      <motion.div
+        layout
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className="absolute top-[4px] left-[4px] w-[32px] h-[32px] bg-background border border-primary rounded-full shadow-md"
+        style={{ x: isDark ? 40 : 0 }}
       />
     </button>
   );
-}
+};
 
-export default ToggleThemeButton;
+export default ToggleThemeSlider;

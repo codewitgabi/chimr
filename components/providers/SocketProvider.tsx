@@ -1,14 +1,17 @@
 "use client";
 
 import useAuth from "@/hooks/useAuth";
-import { socket } from "@/lib/socket";
+import initializeSocket from "@/lib/socket";
 import { IChatContact, IChatHistory, IChatMessage } from "@/types/chat.types";
 import getProfilePicture, {
   TProfilePicture,
 } from "@/utils/profilePicture.mapping";
 import useAppStore from "@/utils/store";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import authService from "@/services/auth.service";
+import { Socket } from "socket.io-client";
 
 function SocketProvider({ children }: { children: ReactNode }) {
   useAuth();
@@ -19,11 +22,24 @@ function SocketProvider({ children }: { children: ReactNode }) {
   const setSelectedContact = useAppStore((state) => state.setSelectContact);
   const selectedContact = useAppStore((state) => state.selectedContact);
   const setChatHistory = useAppStore((state) => state.setChatHistory);
+  const setSocket = useAppStore((state) => state.setSocket);
   const contacts = useAppStore((state) => state.contacts);
   const chatHistory = useAppStore((state) => state.chatHistory);
   const user = useAppStore((state) => state.user);
+  const isMobile = useMediaQuery("(max-width: 655px)");
+  const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
+    // Connect to socket
+
+    const accessToken = authService.getAccessToken();
+
+    if (accessToken) {
+      socket.current = initializeSocket(accessToken);
+      socket.current.connect();
+      setSocket(socket);
+    }
+
     function onConnect() {
       console.log("Socket connected successfully");
       setIsSocketConnected(true);
@@ -46,11 +62,14 @@ function SocketProvider({ children }: { children: ReactNode }) {
       }));
 
       setContacts(parsedContacts);
-      setSelectedContact(parsedContacts[0]);
+
+      if (!isMobile) {
+        setSelectedContact(parsedContacts[0]);
+      }
 
       // Fetch chat history for first contact
 
-      socket.emit("get_chat_history", {
+      socket.current?.emit("get_chat_history", {
         contactId: parsedContacts[0].contactId,
         limit: 20,
         page: 1,
@@ -158,24 +177,24 @@ function SocketProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("socket_error", onSocketError);
-    socket.on("fetch_contacts", onFetchContacts);
-    socket.on("chat_history", onGetChatHistory);
-    socket.on("update_contact", onUpdateContact);
-    socket.on("message_sent", onMessageSent);
-    socket.on("new_message", onNewMessage);
+    socket.current?.on("connect", onConnect);
+    socket.current?.on("disconnect", onDisconnect);
+    socket.current?.on("socket_error", onSocketError);
+    socket.current?.on("fetch_contacts", onFetchContacts);
+    socket.current?.on("chat_history", onGetChatHistory);
+    socket.current?.on("update_contact", onUpdateContact);
+    socket.current?.on("message_sent", onMessageSent);
+    socket.current?.on("new_message", onNewMessage);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("socket_error", onSocketError);
-      socket.off("fetch_contacts", onFetchContacts);
-      socket.off("chat_history", onGetChatHistory);
-      socket.off("update_contact", onUpdateContact);
-      socket.off("message_sent", onMessageSent);
-      socket.off("new_message", onNewMessage);
+      socket.current?.off("connect", onConnect);
+      socket.current?.off("disconnect", onDisconnect);
+      socket.current?.off("socket_error", onSocketError);
+      socket.current?.off("fetch_contacts", onFetchContacts);
+      socket.current?.off("chat_history", onGetChatHistory);
+      socket.current?.off("update_contact", onUpdateContact);
+      socket.current?.off("message_sent", onMessageSent);
+      socket.current?.off("new_message", onNewMessage);
     };
   }, [
     setIsSocketConnected,
@@ -186,6 +205,8 @@ function SocketProvider({ children }: { children: ReactNode }) {
     chatHistory,
     selectedContact,
     user,
+    isMobile,
+    setSocket,
   ]);
 
   return <>{children}</>;

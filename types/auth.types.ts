@@ -7,3 +7,8 @@ export interface SignupFormFields {
   password: string;
   jobTitle: string;
 }
+
+export interface LoginFormFields {
+  username: string;
+  password: string;
+}

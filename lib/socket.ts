@@ -1,12 +1,22 @@
-import authService from "@/services/auth.service";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 const URL =
   process.env.NODE_ENV === "production" ? undefined : "ws://localhost:7000";
 
-export const socket = io(URL, {
-  autoConnect: false,
-  auth: {
-    accessToken: authService.getAccessToken(),
-  },
-});
+let socket: Socket | null = null;
+
+const initializeSocket = (accessToken: string): Socket => {
+  if (!socket) {
+    socket = io(URL, {
+      autoConnect: false,
+      auth: {
+        accessToken,
+      },
+    });
+  }
+
+  return socket;
+};
+
+
+export default initializeSocket;
