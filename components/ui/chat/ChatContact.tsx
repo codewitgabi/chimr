@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ChatContactList from "./ChatContactList";
 import ChatSearchForm from "./ChatSearchForm";
 
@@ -38,7 +39,9 @@ function ChatContact() {
 
       {/* Search component */}
 
-      <ChatSearchForm className="mt-4" />
+      <Suspense fallback={<div>Loading search...</div>}>
+        <ChatSearchForm className="mt-4" />
+      </Suspense>
 
       {/* Contact list */}
 
