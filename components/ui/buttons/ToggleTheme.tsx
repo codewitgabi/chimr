@@ -29,10 +29,11 @@ const ToggleThemeSlider = () => {
       <FaMoon className="text-[#4B5563] text-sm z-10" />
 
       {/* Sliding knob */}
+
       <motion.div
         layout
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="absolute top-[4px] left-[4px] w-[32px] h-[32px] bg-background border border-primary rounded-full shadow-md"
+        className="absolute top-[4px] left-[4px] w-[32px] h-[32px] border-2 border-blue-500 rounded-full shadow-2xl"
         style={{ x: isDark ? 40 : 0 }}
       />
     </button>

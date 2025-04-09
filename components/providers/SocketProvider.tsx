@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import authService from "@/services/auth.service";
 import { Socket } from "socket.io-client";
+import updateContactPosition from "@/utils/updateContactPosition";
 
 function SocketProvider({ children }: { children: ReactNode }) {
   useAuth();
@@ -52,7 +53,9 @@ function SocketProvider({ children }: { children: ReactNode }) {
 
     function onSocketError({ error }: { error: string }) {
       console.error({ error });
-      toast.error(error);
+      toast.error("Socket error", {
+        description: error,
+      });
     }
 
     function onFetchContacts(contacts: Array<IChatContact>) {
@@ -169,6 +172,8 @@ function SocketProvider({ children }: { children: ReactNode }) {
 
         setChatHistory(updatedChatHistory);
       }
+
+      updateContactPosition(sender, message, createdAt, contacts, setContacts);
 
       // Send notification for new message
 

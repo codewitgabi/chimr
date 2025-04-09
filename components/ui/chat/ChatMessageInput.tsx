@@ -2,6 +2,7 @@
 
 import { IChatHistory, IChatMessage } from "@/types/chat.types";
 import useAppStore from "@/utils/store";
+import updateContactPosition from "@/utils/updateContactPosition";
 import { useRef, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 
@@ -11,6 +12,8 @@ function ChatMessageInput() {
   const selectedContact = useAppStore((state) => state.selectedContact);
   const setChatHistory = useAppStore((state) => state.setChatHistory);
   const chatHistory = useAppStore((state) => state.chatHistory);
+  const contacts = useAppStore((state) => state.contacts);
+  const setContacts = useAppStore((state) => state.setContacts);
   const socket = useAppStore((state) => state.socket);
   const user = useAppStore((state) => state.user);
   const currentUser = {
@@ -66,6 +69,16 @@ function ChatMessageInput() {
       // Clear the input
 
       setMessage("");
+
+      // Update contact position
+
+      updateContactPosition(
+        selectedContact?.contactId as string,
+        message.trim(),
+        tempMessage.createdAt,
+        contacts,
+        setContacts
+      );
     }
   };
 
