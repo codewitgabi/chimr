@@ -18,9 +18,10 @@ function ChatContactCard({
   unreadCount,
   about,
 }: Omit<IChatContact, "isRead">) {
-  const setSelectedContact = useAppStore((state) => state.setSelectContact);
-  const selectedContact = useAppStore((state) => state.selectedContact);
-  const socket = useAppStore((state) => state.socket);
+  const { setSelectedContact, selectedContact, socket } = useAppStore(
+    (state) => state
+  );
+
   const [openMobileChatContent, setOpenMobileChatContent] =
     useState<boolean>(false);
   const [localUnreadCount, setLocalUnreadCount] = useState<number>(unreadCount);

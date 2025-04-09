@@ -9,13 +9,16 @@ import { AiOutlineSend } from "react-icons/ai";
 function ChatMessageInput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [message, setMessage] = useState("");
-  const selectedContact = useAppStore((state) => state.selectedContact);
-  const setChatHistory = useAppStore((state) => state.setChatHistory);
-  const chatHistory = useAppStore((state) => state.chatHistory);
-  const contacts = useAppStore((state) => state.contacts);
-  const setContacts = useAppStore((state) => state.setContacts);
-  const socket = useAppStore((state) => state.socket);
-  const user = useAppStore((state) => state.user);
+  const {
+    selectedContact,
+    setChatHistory,
+    chatHistory,
+    contacts,
+    setContacts,
+    user,
+    socket,
+  } = useAppStore((state) => state);
+
   const currentUser = {
     _id: user?.id as string,
     username: user?.username as string,

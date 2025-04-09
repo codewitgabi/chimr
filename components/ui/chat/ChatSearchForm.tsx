@@ -1,10 +1,36 @@
+"use client";
+
+import useAppStore from "@/utils/store";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 interface ChatSearchFormProps {
   className?: string;
 }
 
 function ChatSearchForm({ className = "" }: ChatSearchFormProps) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const { setContactSearchQuery } = useAppStore((state) => state);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+
+    const params = new URLSearchParams(searchParams);
+
+    if (query) {
+      params.set("contact", query);
+    } else {
+      params.delete("contact");
+    }
+
+    setContactSearchQuery(query);
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
-    <form
+    <div
       className={`bg-secondary rounded-full w-full flex items-center gap-2 px-4 py-2 ${className}`}
     >
       <svg
@@ -35,8 +61,10 @@ function ChatSearchForm({ className = "" }: ChatSearchFormProps) {
         className="w-full outline-none border-none text-foreground placeholder:text-foreground placeholder:opacity-65 text-sm"
         id="chat-search-input"
         placeholder="Search..."
+        onChange={handleChange}
+        defaultValue={searchParams.get("query")?.toString()}
       />
-    </form>
+    </div>
   );
 }
 

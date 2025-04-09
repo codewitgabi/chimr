@@ -11,14 +11,16 @@ export type State = {
   contacts: Array<IChatContact>;
   chatHistory: IChatHistory;
   socket: RefObject<Socket | null> | null;
+  contactSearchQuery: string;
 };
 
 export type StateAction = {
   toggleNav: () => void;
   setUser: (user: IUser | null) => void;
-  setSelectContact: (contact: IChatContact | null) => void;
+  setSelectedContact: (contact: IChatContact | null) => void;
   setIsSocketConnected: (value: boolean) => void;
   setContacts: (contacts: Array<IChatContact>) => void;
   setChatHistory: (chatHistory: IChatHistory) => void;
   setSocket: (socket: RefObject<Socket | null>) => void;
+  setContactSearchQuery: (contactSearchQuery: string) => void;
 };

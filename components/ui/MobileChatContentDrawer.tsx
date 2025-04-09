@@ -18,9 +18,9 @@ function MobileChatContentDrawer({
   open,
   setOpenMobileChatContent,
 }: MobileChatContentDrawerProps) {
-  const selectedContact = useAppStore((state) => state.selectedContact);
-  const setSelectedContact = useAppStore((state) => state.setSelectContact);
-  const chatHistory = useAppStore((state) => state.chatHistory);
+  const { setSelectedContact, selectedContact, chatHistory } = useAppStore(
+    (state) => state
+  );
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   // Check if the screen width is below or equal to 655px
@@ -44,7 +44,7 @@ function MobileChatContentDrawer({
   };
 
   // Close drawer automatically when screen size changes from mobile to desktop
-  
+
   useEffect(() => {
     if (!isMobile && open) {
       setOpenMobileChatContent(false);

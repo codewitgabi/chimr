@@ -17,6 +17,7 @@ const useAppStore = create<State & StateAction>((set) => ({
     messages: [],
   },
   socket: null,
+  contactSearchQuery: "",
 
   // State actions
 
@@ -29,7 +30,7 @@ const useAppStore = create<State & StateAction>((set) => ({
     set({ user });
   },
 
-  setSelectContact: (contact) => {
+  setSelectedContact: (contact) => {
     set({ selectedContact: contact });
   },
 
@@ -47,6 +48,10 @@ const useAppStore = create<State & StateAction>((set) => ({
 
   setSocket: (socket) => {
     set({ socket });
+  },
+
+  setContactSearchQuery: (contactSearchQuery) => {
+    set({ contactSearchQuery });
   },
 }));
 

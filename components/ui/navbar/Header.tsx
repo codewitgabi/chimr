@@ -14,7 +14,7 @@ interface HeaderProps {
 
 function Header({ title }: HeaderProps) {
   useAuth();
-  const user = useAppStore((state) => state.user);
+  const { user } = useAppStore((state) => state);
 
   return (
     <header className="shrink-0">

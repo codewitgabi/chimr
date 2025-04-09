@@ -10,7 +10,7 @@ function useAuth() {
    * Hook to update the user state and redirect to signup/login page is there is no user
    */
 
-  const setUser = useAppStore((state) => state.setUser);
+  const { setUser } = useAppStore((state) => state);
   const router = useRouter();
 
   useEffect(() => {

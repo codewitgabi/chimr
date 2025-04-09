@@ -19,14 +19,16 @@ function SocketProvider({ children }: { children: ReactNode }) {
   const setIsSocketConnected = useAppStore(
     (state) => state.setIsSocketConnected
   );
-  const setContacts = useAppStore((state) => state.setContacts);
-  const setSelectedContact = useAppStore((state) => state.setSelectContact);
-  const selectedContact = useAppStore((state) => state.selectedContact);
-  const setChatHistory = useAppStore((state) => state.setChatHistory);
-  const setSocket = useAppStore((state) => state.setSocket);
-  const contacts = useAppStore((state) => state.contacts);
-  const chatHistory = useAppStore((state) => state.chatHistory);
-  const user = useAppStore((state) => state.user);
+  const {
+    setContacts,
+    setSelectedContact,
+    setChatHistory,
+    selectedContact,
+    setSocket,
+    contacts,
+    chatHistory,
+    user,
+  } = useAppStore((state) => state);
   const isMobile = useMediaQuery("(max-width: 655px)");
   const socket = useRef<Socket | null>(null);
 

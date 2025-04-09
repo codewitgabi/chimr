@@ -7,9 +7,7 @@ import ChatMessageInput from "./ChatMessageInput";
 import ChatBubble from "./ChatBubble";
 
 function ChatContent() {
-  const selectedContact = useAppStore((state) => state.selectedContact);
-  const chatHistory = useAppStore((state) => state.chatHistory);
-  const user = useAppStore((state) => state.user);
+  const { selectedContact, chatHistory, user } = useAppStore((state) => state);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 

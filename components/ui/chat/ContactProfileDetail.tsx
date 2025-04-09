@@ -4,7 +4,7 @@ import useAppStore from "@/utils/store";
 import Image, { StaticImageData } from "next/image";
 
 function ContactProfileDetail() {
-  const selectedContact = useAppStore((state) => state.selectedContact);
+  const { selectedContact } = useAppStore((state) => state);
 
   return (
     <div className="flex-1 overflow-y-auto w-full bg-secondary rounded-xl text-center p-4 max-[1200px]:hidden">
