@@ -23,7 +23,7 @@ const corsOrigin = [
   "http://localhost:3001",
   "http://localhost:5500",
   "http://46.101.100.35:3000",
-  "http://192.168.0.16:3001",
+  "http://192.168.0.193:3001",
   "https://closely-notable-mongoose.ngrok-free.app",
   "https://admin.socket.io",
 ];

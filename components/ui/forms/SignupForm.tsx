@@ -69,12 +69,12 @@ function SignupForm() {
   };
 
   return (
-    <form className="max-w-[380px] mt-12" onSubmit={handleSubmit(onSubmit)}>
+    <form className="max-w-[380px] mt-32 py-12" onSubmit={handleSubmit(onSubmit)}>
       <legend className="font-bold text-4xl">
         Create an account to get started
       </legend>
 
-      <div className="flex items-center gap-4 mt-6">
+      <div className="flex items-center gap-4 mt-6 max-sm:flex-col max-sm:items-start">
         <fieldset>
           <input
             id="username"

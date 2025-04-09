@@ -3,8 +3,8 @@ import ChatBanner from "@/assets/chat-banner.jpg";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-6 h-dvh w-full overflow-hidden ">
-      <div className="w-2/3 h-full overflow-y-auto flex justify-center items-center">
+    <div className="flex h-dvh w-full overflow-hidden">
+      <div className="w-2/3 min-h-full overflow-y-auto flex justify-center items-center px-4 max-[1245px]:w-full">
         {children}
       </div>
 
@@ -12,7 +12,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Image
           src={ChatBanner}
           alt="chat-banner"
-          className="h-full w-full object-fill"
+          className="h-full w-full object-fill max-[970px]:hidden"
         />
       </div>
     </div>

@@ -51,7 +51,7 @@ function LoginForm() {
 
   return (
     <form className="max-w-[380px]" onSubmit={handleSubmit(onSubmit)}>
-      <legend className="font-bold text-4xl mb-12">
+      <legend className="font-bold text-4xl mb-12 max-sm:text-3xl">
         Login to your account to continue
       </legend>
 
