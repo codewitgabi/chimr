@@ -6,6 +6,7 @@ import authService from "@/services/auth.service";
 import { IUser } from "@/types/user.types";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import Link from "next/link";
 
 function LoginForm() {
   const {
@@ -88,6 +89,12 @@ function LoginForm() {
       >
         Continue
       </button>
+
+      <div className="mt-6 text-center">
+        <Link href="/auth/signup" className="text-red-500 hover:opacity-85">
+          Create account
+        </Link>
+      </div>
     </form>
   );
 }

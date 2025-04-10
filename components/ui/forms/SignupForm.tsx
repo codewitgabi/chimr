@@ -11,6 +11,7 @@ import authService from "@/services/auth.service";
 import { IUser } from "@/types/user.types";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import Link from "next/link";
 
 const profileImages: Array<TProfilePicture> = [
   "avatar-1",
@@ -182,6 +183,12 @@ function SignupForm() {
       >
         Get started
       </button>
+
+      <div className="mt-6 text-center">
+        <Link href="/auth/login" className="text-red-500 hover:opacity-85">
+          Login
+        </Link>
+      </div>
     </form>
   );
 }

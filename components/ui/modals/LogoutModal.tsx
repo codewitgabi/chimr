@@ -25,6 +25,10 @@ function LogoutModal({ open, handleClose }: LogoutModalProps) {
       description: "You will be redirected to login page",
     });
 
+    // Clear state
+
+    
+
     router.replace("/auth/login");
   };
 
