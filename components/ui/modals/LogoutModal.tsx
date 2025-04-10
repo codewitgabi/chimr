@@ -12,7 +12,7 @@ interface LogoutModalProps {
 
 function LogoutModal({ open, handleClose }: LogoutModalProps) {
   const router = useRouter();
-  const { resetState } = useAppStore((state) => state);
+  const { resetState, socket } = useAppStore((state) => state);
 
   const handleAction = () => {
     // Close the modal
@@ -30,6 +30,10 @@ function LogoutModal({ open, handleClose }: LogoutModalProps) {
     // Clear state
 
     resetState();
+
+    // Disconnect from socket
+
+    socket?.current?.disconnect();
 
     router.replace("/auth/login");
   };
