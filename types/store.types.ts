@@ -23,4 +23,5 @@ export type StateAction = {
   setChatHistory: (chatHistory: IChatHistory) => void;
   setSocket: (socket: RefObject<Socket | null>) => void;
   setContactSearchQuery: (contactSearchQuery: string) => void;
+  resetState: () => void;
 };

@@ -1,9 +1,7 @@
 import { StateAction, State } from "@/types/store.types";
 import { create } from "zustand";
 
-const useAppStore = create<State & StateAction>((set) => ({
-  // States
-
+const initialState: State = {
   navState: "closed",
   user: null,
   selectedContact: null,
@@ -18,7 +16,11 @@ const useAppStore = create<State & StateAction>((set) => ({
   },
   socket: null,
   contactSearchQuery: "",
+};
 
+const useAppStore = create<State & StateAction>((set) => ({
+  // States
+  ...initialState,
   // State actions
 
   toggleNav: () =>
@@ -52,6 +54,10 @@ const useAppStore = create<State & StateAction>((set) => ({
 
   setContactSearchQuery: (contactSearchQuery) => {
     set({ contactSearchQuery });
+  },
+
+  resetState: () => {
+    set({ ...initialState });
   },
 }));
 

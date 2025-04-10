@@ -1,5 +1,6 @@
 "use client";
 
+import useAppStore from "@/utils/store";
 import Dialog from "@mui/material/Dialog";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -11,6 +12,7 @@ interface LogoutModalProps {
 
 function LogoutModal({ open, handleClose }: LogoutModalProps) {
   const router = useRouter();
+  const { resetState } = useAppStore((state) => state);
 
   const handleAction = () => {
     // Close the modal
@@ -27,7 +29,7 @@ function LogoutModal({ open, handleClose }: LogoutModalProps) {
 
     // Clear state
 
-    
+    resetState();
 
     router.replace("/auth/login");
   };
