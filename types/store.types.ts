@@ -12,6 +12,7 @@ export type State = {
   chatHistory: IChatHistory;
   socket: RefObject<Socket | null> | null;
   contactSearchQuery: string;
+  contactsIsLoading: boolean;
 };
 
 export type StateAction = {
@@ -24,4 +25,5 @@ export type StateAction = {
   setSocket: (socket: RefObject<Socket | null>) => void;
   setContactSearchQuery: (contactSearchQuery: string) => void;
   resetState: () => void;
+  setContactsIsLoading: (value: boolean) => void;
 };

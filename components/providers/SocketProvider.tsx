@@ -28,6 +28,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     contacts,
     chatHistory,
     user,
+    setContactsIsLoading,
   } = useAppStore((state) => state);
   const isMobile = useMediaQuery("(max-width: 655px)");
   const socket = useRef<Socket | null>(null);
@@ -67,6 +68,8 @@ function SocketProvider({ children }: { children: ReactNode }) {
       }));
 
       setContacts(parsedContacts);
+
+      setContactsIsLoading(false);
 
       if (!isMobile) {
         setSelectedContact(parsedContacts[0]);
@@ -214,6 +217,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     user,
     isMobile,
     setSocket,
+    setContactsIsLoading,
   ]);
 
   return <>{children}</>;
