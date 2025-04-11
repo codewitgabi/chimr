@@ -12,6 +12,8 @@ import { IUser } from "@/types/user.types";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Link from "next/link";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 const profileImages: Array<TProfilePicture> = [
   "avatar-1",
@@ -56,8 +58,20 @@ function SignupForm() {
 
       authService.setUser({ id: _id, username, jobTitle, about, profilePic });
 
+      toast.success("Authentication", {
+        description: "Account created successfully",
+      });
+
       router.push("/");
     } catch (error) {
+      if (error instanceof AxiosError) {
+        const data = error.response?.data;
+
+        toast.error("Authentication error", {
+          description: data?.error.message,
+        });
+      }
+
       console.error({ error });
     }
   };

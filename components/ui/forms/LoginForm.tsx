@@ -7,6 +7,8 @@ import { IUser } from "@/types/user.types";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Link from "next/link";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 function LoginForm() {
   const {
@@ -36,9 +38,21 @@ function LoginForm() {
 
       authService.setUser({ id: _id, username, jobTitle, about, profilePic });
 
+      toast.success("Authentication", {
+        description: "Login successful",
+      });
+
       router.push("/");
       reset();
     } catch (error) {
+      if (error instanceof AxiosError) {
+        const data = error.response?.data;
+
+        toast.error("Authentication error", {
+          description: data?.error.message,
+        });
+      }
+
       console.error({ error });
     }
   };
