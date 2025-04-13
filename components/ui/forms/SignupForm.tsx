@@ -1,46 +1,47 @@
 "use client";
 
-import getProfilePicture, {
-  TProfilePicture,
-} from "@/utils/profilePicture.mapping";
+import type React from "react";
+
 import { useState } from "react";
-import Image from "next/image";
-import { SignupFormFields } from "@/types/auth.types";
-import { SubmitHandler, useForm } from "react-hook-form";
-import authService from "@/services/auth.service";
-import { IUser } from "@/types/user.types";
-import { useRouter } from "next/navigation";
-import api from "@/lib/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, User, Lock, ArrowRight, Briefcase } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { SocialLoginButtons } from "@/components/ui/SocialLoginButton";
+import { AvatarSelector } from "@/components/ui/AvatarSelectors";
+import api from "@/lib/api";
+import authService from "@/services/auth.service";
+import { SignupFormFields } from "@/types/auth.types";
+import { IUser } from "@/types/user.types";
 import { AxiosError } from "axios";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
+import { TProfilePicture } from "@/utils/profilePicture.mapping";
 
-const profileImages: Array<TProfilePicture> = [
-  "avatar-1",
-  "avatar-2",
-  "avatar-3",
-  "avatar-4",
-  "avatar-5",
-  "avatar-6",
-  "avatar-7",
-];
-
-function SignupForm() {
-  const [selectedImage, setSelectedImage] = useState("");
+export default function SignupForm() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const {
     register,
     handleSubmit,
     formState: { errors, touchedFields },
     // reset,
   } = useForm<SignupFormFields>();
-  const router = useRouter();
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedImage(event.target.value);
-  };
 
   const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     try {
+      setIsLoading(true);
+
+      // Set profile pic
+
+      data.profilePic = selectedAvatar as TProfilePicture;
+
       const response = await api.post("/auth/register", JSON.stringify(data));
       const {
         user: { username, _id, jobTitle, about, profilePic },
@@ -71,140 +72,159 @@ function SignupForm() {
           description: data?.error.message,
         });
       }
-
-      console.error({ error });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form
-      className="max-w-[380px] mt-32 py-12"
-      onSubmit={handleSubmit(onSubmit)}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
     >
-      <legend className="font-bold text-4xl">
-        Create an account to get started
-      </legend>
-
-      <div className="flex items-center gap-4 mt-6 max-sm:flex-col max-sm:items-start">
-        <fieldset>
-          <input
-            id="username"
-            type="text"
-            placeholder="Username"
-            className="w-full outline-none py-2 px-4 rounded-full border"
-            {...register("username", {
-              required: "This field is required",
-            })}
-          />
-          {touchedFields.username && errors.username && (
-            <p className="text-red-500 text-[0.75rem]">
-              {errors.username.message}
-            </p>
-          )}
-        </fieldset>
-
-        <fieldset>
-          <input
-            id="password"
-            type="password"
-            placeholder="Password"
-            className="w-full outline-none py-2 px-4 rounded-full border"
-            {...register("password", {
-              required: "This field is required",
-            })}
-          />
-          {touchedFields.password && errors.password && (
-            <p className="text-red-500 text-[0.75rem]">
-              {errors.password.message}
-            </p>
-          )}
-        </fieldset>
-      </div>
-
-      <fieldset className="mt-4">
-        <input
-          id="jobTitle"
-          type="text"
-          placeholder="Job title"
-          className="w-full outline-none py-2 px-4 rounded-full border"
-          {...register("jobTitle", {
-            required: "This field is required",
-          })}
-        />
-        {touchedFields.jobTitle && errors.jobTitle && (
-          <p className="text-red-500 text-[0.75rem]">
-            {errors.jobTitle.message}
-          </p>
-        )}
-      </fieldset>
-
-      {/* About */}
-
-      <textarea
-        id="about"
-        className="w-full inline-block mt-4 outline-none py-2 px-4 rounded-2xl border h-[150px] resize-none"
-        placeholder="Tell users about yourself"
-        {...register("about", {
-          required: "This field is required",
-        })}
-      ></textarea>
-      {touchedFields.about && errors.about && (
-        <p className="text-red-500 text-[0.75rem]">{errors.about.message}</p>
-      )}
-
-      {/* Profile picture */}
-
-      <p className="mt-6">Select profile picture</p>
-
-      <div className="flex flex-wrap items-center justify-center gap-6 mt-2">
-        {profileImages.map((image, index) => (
-          <label
-            key={index}
-            className={`cursor-pointer ${
-              selectedImage === image ? "border-4 border-blue-500" : ""
-            }`}
-          >
-            <input
-              type="radio"
-              value={image}
-              className="hidden"
-              {...register("profilePic", {
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="username">Full Name</Label>
+          <div className="relative">
+            <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="username"
+              placeholder="John Doe"
+              className={`pl-10 ${
+                touchedFields.username && errors.username && "border-red-500"
+              }`}
+              {...register("username", {
                 required: "This field is required",
-                onChange: handleChange,
               })}
             />
-            <div className="relative">
-              <Image
-                src={getProfilePicture(image)}
-                alt={`Profile ${index + 1}`}
-                className="rounded-full"
-                height={60}
-                width={60}
-              />
-              {selectedImage === image && (
-                <div className="absolute top-0 right-0 bg-blue-500 text-white text-xs rounded-full p-1">
-                  Selected
-                </div>
-              )}
-            </div>
-          </label>
-        ))}
-      </div>
+            {touchedFields.username && errors.username && (
+              <p className="text-red-500 text-[0.75rem] mt-1">
+                {errors.username.message}
+              </p>
+            )}
+          </div>
+        </div>
 
-      <button
-        className="w-full inline-block disabled:cursor-not-allowed mt-16 border py-2 px-6 rounded-full cursor-pointer"
-        disabled={false}
-      >
-        Get started
-      </button>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="password"
+              type="password"
+              className={`pl-10 ${
+                touchedFields.password && errors.password && "border-red-500"
+              }`}
+              placeholder="••••••••"
+              {...register("password", {
+                required: "This field is required",
+                minLength: {
+                  value: 8,
+                  message: "Minimum of 8 characters is expected",
+                },
+              })}
+            />
+            {touchedFields.password && errors.password && (
+              <p className="text-red-500 text-[0.75rem] mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+        </div>
 
-      <div className="mt-6 text-center">
-        <Link href="/auth/login" className="text-red-500 hover:opacity-85">
-          Login
-        </Link>
+        <div className="space-y-2">
+          <Label htmlFor="jobTitle">Job Title</Label>
+          <div className="relative">
+            <Briefcase className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="jobTitle"
+              placeholder="Software Developer"
+              {...register("jobTitle", {
+                required: "This field is required",
+              })}
+              className={`pl-10 ${
+                touchedFields.jobTitle && errors.jobTitle && "border-red-500"
+              }`}
+            />
+            {touchedFields.jobTitle && errors.jobTitle && (
+              <p className="text-red-500 text-[0.75rem] mt-1">
+                {errors.jobTitle.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="about">Tell users about yourself</Label>
+          <Textarea
+            id="about"
+            className={`resize-none min-h-[100px] ${
+              touchedFields.about && errors.about && "border-red-500"
+            }`}
+            placeholder="I'm a developer who loves to chat..."
+            {...register("about", {
+              required: "This field is required",
+            })}
+          />
+          {touchedFields.about && errors.about && (
+            <p className="text-red-500 text-[0.75rem] mt-1">
+              {errors.about.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label>Select profile picture</Label>
+          <AvatarSelector
+            selectedAvatar={selectedAvatar}
+            setSelectedAvatar={setSelectedAvatar}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full bg-gradient-to-br from-purple-500 to-pink-500 dark:from-slate-800 dark:to-slate-950 text-white"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Creating account...
+            </>
+          ) : (
+            <>
+              Get started
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </>
+          )}
+        </Button>
+      </form>
+
+      <div className="mt-6">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <Separator />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <SocialLoginButtons />
+
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          Already have an account?{" "}
+          <Link
+            href="/auth/login"
+            className="text-foreground font-medium hover:underline"
+          >
+            Login
+          </Link>
+        </p>
       </div>
-    </form>
+    </motion.div>
   );
 }
-
-export default SignupForm;

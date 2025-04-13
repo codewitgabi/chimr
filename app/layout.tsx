@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import ThemeProvider from "@/components/providers/ThemeProvider";
 
 const font = Josefin_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -47,7 +47,12 @@ export default function RootLayout({
       </head>
 
       <body className={`${font.className} antialiased`}>
-        <ThemeProvider defaultTheme="dark" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
 
