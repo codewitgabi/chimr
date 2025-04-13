@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Login | Chimr",
     description: "Access your Chimr account to chat and collaborate.",
-    url: "https://chimr.vercel.app/login",
+    url: "https://chimr.vercel.app/auth/login",
     siteName: "Chimr",
     locale: "en_US",
     type: "website",
