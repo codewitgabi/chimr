@@ -3,7 +3,7 @@ import LoginForm from "@/components/ui/forms/LoginForm";
 import AuthLayout from "@/components/layouts/AuthLayout";
 
 export const metadata: Metadata = {
-  title: "Login | Chimr",
+  title: "Login",
   description:
     "Sign in to your Chimr account to access chats and connect with your friends.",
   robots: {

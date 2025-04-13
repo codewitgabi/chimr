@@ -3,7 +3,7 @@ import SignupForm from "@/components/ui/forms/SignupForm";
 import AuthLayout from "@/components/layouts/AuthLayout";
 
 export const metadata: Metadata = {
-  title: "Sign Up | Chimr",
+  title: "Sign Up",
   description:
     "Create a Chimr account to start chatting and connecting with others.",
   robots: {
