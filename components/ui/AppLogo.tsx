@@ -11,7 +11,7 @@ function AppLogo() {
         priority
       />
 
-      <span className="text-[#209CEE] font-bold">Let&apos;s chat</span>
+      <span className="text-[#209CEE] font-bold">Chimr</span>
     </div>
   );
 }

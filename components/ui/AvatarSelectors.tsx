@@ -73,7 +73,7 @@ export function AvatarSelector({
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
-                className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                className="absolute -top-1 -right-1 bg-primary text-black dark:text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
               >
                 ✓
               </motion.div>

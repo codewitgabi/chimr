@@ -96,14 +96,8 @@
 body,
 html {
   height: 100%;
-  /* overflow: hidden; */
   background: var(--primary);
   color: var(--foreground);
-}
-
-body.body-hidden,
-html.body-hidden {
-  overflow: hidden;
 }
 
 @media only screen and (min-width: 655px) {
@@ -116,7 +110,6 @@ html.body-hidden {
   --primary: #002047;
   --secondary: #001329;
   --hover-effect: #2f83e4;
-  /* --foreground: #ffffff; */
   --light-black-dark-blue: #bfdbfd;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -124,9 +117,7 @@ html.body-hidden {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
@@ -156,7 +147,7 @@ html.body-hidden {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-primary text-foreground;
   }
 }
 
@@ -170,21 +161,4 @@ html.body-hidden {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Add these specific gradient classes */
-.bg-gradient-to-br.from-purple-500.to-pink-500 {
-  background-image: linear-gradient(
-    to bottom right,
-    hsl(262.1 83.3% 57.8%),
-    hsl(330 81.2% 60.4%)
-  );
-}
-
-.dark .dark\:from-slate-800.dark\:to-slate-950 {
-  background-image: linear-gradient(
-    to bottom right,
-    hsl(215 20.2% 16.1%),
-    hsl(229 84% 5%)
-  );
 }

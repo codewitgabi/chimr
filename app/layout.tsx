@@ -14,7 +14,7 @@ const font = Josefin_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Next chat",
+  title: "Chimr",
   description: "Cool theme chat application",
 };
 

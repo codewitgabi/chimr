@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Mail, Lock, ArrowRight } from "lucide-react";
+import { Loader2, User, Lock, ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SocialLoginButtons } from "@/components/ui/SocialLoginButton";
 import api from "@/lib/api";
@@ -79,13 +79,13 @@ export default function LoginForm() {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="username">Email</Label>
+          <Label htmlFor="username">Username</Label>
           <div className="relative">
-            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="username"
               type="text"
-              placeholder="name@example.com"
+              placeholder="John Doe"
               className="pl-10"
               {...register("username", {
                 required: "This field is required",
