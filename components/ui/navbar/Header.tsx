@@ -1,12 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import ToggleThemeButton from "../buttons/ToggleTheme";
 import useAuth from "@/hooks/useAuth";
 import useAppStore from "@/utils/store";
-import getProfilePicture, {
-  TProfilePicture,
-} from "@/utils/profilePicture.mapping";
+import ProfileMenu from "../ProfileMenu";
 
 interface HeaderProps {
   title: string;
@@ -45,14 +42,7 @@ function Header({ title }: HeaderProps) {
             />
           </svg>
 
-          {user?.profilePic && (
-            <Image
-              src={getProfilePicture(user?.profilePic as TProfilePicture)}
-              alt="default-avatar"
-              width={40}
-              height={40}
-            />
-          )}
+          <ProfileMenu user={user} />
 
           <h1 className="text-sm max-[425px]:hidden">{user?.username}</h1>
         </div>

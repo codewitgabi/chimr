@@ -1,43 +1,40 @@
 "use client";
-
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { FaMoon } from "react-icons/fa";
-import { LiaSun } from "react-icons/lia";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
-const ToggleThemeSlider = () => {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
-
-  const isDark = resolvedTheme === "dark";
-
-  const toggleTheme = () => setTheme(isDark ? "light" : "dark");
+function ToggleTheme() {
+  const { setTheme } = useTheme();
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="relative w-[80px] h-[40px] rounded-full bg-secondary flex items-center justify-between px-3 transition-colors duration-300"
-    >
-      {/* Sun Icon */}
-      <LiaSun className="text-yellow-500 text-xl z-10" />
-
-      {/* Moon Icon */}
-      <FaMoon className="text-[#4B5563] text-sm z-10" />
-
-      {/* Sliding knob */}
-
-      <motion.div
-        layout
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="absolute top-[4px] left-[4px] w-[32px] h-[32px] border-2 border-blue-500 rounded-full shadow-2xl"
-        style={{ x: isDark ? 40 : 0 }}
-      />
-    </button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon" className="rounded-full">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
-};
+}
 
-export default ToggleThemeSlider;
+export default ToggleTheme;

@@ -3,10 +3,10 @@
 import type React from "react";
 
 import { useEffect, useState } from "react";
-import { ModeToggle } from "@/components/ui/ModeToggle";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMobile } from "@/hooks/useMobile";
 import AuthIllustration from "@/components/ui/AuthIllustration";
+import ToggleTheme from "../ui/buttons/ToggleTheme";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -25,6 +25,7 @@ export default function AuthLayout({
   const isMobile = useMobile();
 
   // Prevent hydration mismatch
+  
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -40,7 +41,8 @@ export default function AuthLayout({
             <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
             <span className="font-bold text-lg">Chimr</span>
           </div>
-          <ModeToggle />
+
+          <ToggleTheme />
         </div>
 
         <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
