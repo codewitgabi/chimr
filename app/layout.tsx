@@ -14,8 +14,82 @@ const font = Josefin_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Chimr",
-  description: "Cool theme chat application",
+  title: {
+    default: "Chimr",
+    template: "%s | Chimr",
+  },
+  description:
+    "Chimr is a modern chat application that helps you connect and collaborate with friends and teams in real-time.",
+  metadataBase: new URL("https://chimr.vercel.app"), // Replace with your actual domain
+
+  keywords: [
+    "Chimr",
+    "chat app",
+    "messaging",
+    "realtime chat",
+    "group chat",
+    "React chat app",
+    "Next.js messaging",
+  ],
+
+  authors: [
+    {
+      name: "Gabriel Michael Ojomakpene",
+      url: "https://codewitgabi.vercel.app",
+    },
+  ],
+
+  creator: "Chimr Team",
+
+  openGraph: {
+    title: "Chimr",
+    description:
+      "A powerful and seamless chat platform built for modern communication.",
+    url: "https://chimr.vercel.app",
+    siteName: "Chimr",
+    images: [
+      {
+        url: "/apple-touch-icon.png", // Replace with your OG image
+        width: 1200,
+        height: 630,
+        alt: "Chimr App",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Chimr",
+    description: "Chat and connect effortlessly with Chimr.",
+    creator: "@codewitgabi1", // Your Twitter handle
+    images: ["/apple-touch-icon.png"],
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
