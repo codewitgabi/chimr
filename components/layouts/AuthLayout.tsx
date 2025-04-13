@@ -32,9 +32,9 @@ export default function AuthLayout({
   if (!mounted) return null;
 
   return (
-    <div className="min-h-dvh w-full flex flex-col md:flex-row">
+    <div className="min-h-screen w-full flex flex-col md:flex-row">
       {/* Form Section */}
-      <div className="w-full md:w-1/2 flex flex-col h-dvh md:h-auto p-6 md:p-10 lg:p-16 dark:bg-slate-900 bg-slate-50">
+      <div className="w-full md:w-1/2 flex flex-col min-h-dvh md:h-auto p-6 md:p-10 lg:p-16 dark:bg-slate-900 bg-slate-50">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
