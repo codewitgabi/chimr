@@ -82,10 +82,10 @@ function ChatContent() {
       {/* Chat content */}
 
       <div
-        className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col"
+        className="mt-6 bg-secondary max-[655px]:rounded-none rounded-xl grow overflow-y-auto relative flex flex-col"
         ref={chatContainerRef}
       >
-        <div className="grow overflow-y-auto">
+        <div className="grow overflow-y-auto p-4">
           {chatHistory.messages.length > 0 ? (
             <>
               {chatHistory.messages.map(

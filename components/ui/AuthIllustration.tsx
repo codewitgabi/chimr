@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { motion } from "framer-motion";
-// import { useTheme } from "next-themes";
 
 interface AuthIllustrationProps {
   type: "login" | "signup";
@@ -10,10 +9,9 @@ interface AuthIllustrationProps {
 
 export default function AuthIllustration({ type }: AuthIllustrationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-//   const { theme } = useTheme();
-//   const isDark = theme === "dark";
 
   // Animation variants for the floating elements
+
   const floatingAnimation = {
     initial: { y: 0 },
     animate: (i: number) => ({
@@ -28,6 +26,7 @@ export default function AuthIllustration({ type }: AuthIllustrationProps) {
   };
 
   // Elements to render based on type
+
   const elements =
     type === "login"
       ? [
@@ -84,6 +83,7 @@ export default function AuthIllustration({ type }: AuthIllustrationProps) {
         ];
 
   // Create the main illustration
+  
   const renderMainIllustration = () => {
     return (
       <motion.div

@@ -81,12 +81,17 @@ export default function LoginForm() {
         <div className="space-y-2">
           <Label htmlFor="username">Username</Label>
           <div className="relative">
-            <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <User className="absolute left-3 top-2 h-4 w-4 text-muted-foreground" />
             <Input
               id="username"
               type="text"
               placeholder="John Doe"
-              className="pl-10"
+              className={`pl-10 ${
+                touchedFields.username && errors.username && "border-red-500"
+              }`}
+              {...register("username", {
+                required: "This field is required",
+              })}
               {...register("username", {
                 required: "This field is required",
               })}
@@ -115,7 +120,12 @@ export default function LoginForm() {
               id="password"
               type="password"
               placeholder="••••••••"
-              className="pl-10"
+              className={`pl-10 ${
+                touchedFields.password && errors.password && "border-red-500"
+              }`}
+              {...register("username", {
+                required: "This field is required",
+              })}
               {...register("password", {
                 required: "This field is required",
                 minLength: {

@@ -3,10 +3,14 @@
 import { IChatHistory, IChatMessage } from "@/types/chat.types";
 import useAppStore from "@/utils/store";
 import updateContactPosition from "@/utils/updateContactPosition";
-import { useRef, useState } from "react";
-import { AiOutlineSend } from "react-icons/ai";
+// import { AiOutlineSend } from "react-icons/ai";
+// import { Plus } from "lucide-react";
+import { useState, useRef, useEffect, type KeyboardEvent } from "react";
+import { Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-function ChatMessageInput() {
+function ChatMessageInput({ className }: { className?: string }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [message, setMessage] = useState("");
   const {
@@ -25,14 +29,14 @@ function ChatMessageInput() {
     profilePic: user?.profilePic as string,
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
+  // const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   setMessage(e.target.value);
 
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"; // reset
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  };
+  //   if (textareaRef.current) {
+  //     textareaRef.current.style.height = "auto"; // reset
+  //     textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+  //   }
+  // };
 
   const handleSendMessage = () => {
     // Only send message when there is a selected contact and message length is greater than 1
@@ -73,6 +77,12 @@ function ChatMessageInput() {
 
       setMessage("");
 
+      // Reset textarea height
+
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
+      }
+
       // Update contact position
 
       updateContactPosition(
@@ -85,24 +95,61 @@ function ChatMessageInput() {
     }
   };
 
-  return (
-    <div className="sticky -bottom-2 left-0 w-full right-0 flex items-end rounded-2xl max-[655px]:relative max-[655px]:bottom-auto max-[655px]:right-auto max-[655px]:left-auto max-[655px]:overflow-hidden max-[655px]:rounded-none max-[655px]:gap-2">
-      <textarea
-        ref={textareaRef}
-        name="chatMessage"
-        id="chatMessage"
-        rows={1}
-        className="bg-primary overflow-hidden resize-none max-h-[100px] rounded-lg outline-none focus:border-blue-300 p-4 inline-block flex-1"
-        value={message}
-        onChange={handleChange}
-      ></textarea>
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    // Send message on Enter without Shift
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
 
-      <button
-        className="rounded-full p-3 max-[655px]: -rotate-45 cursor-pointer"
-        onClick={handleSendMessage}
-      >
-        <AiOutlineSend className="text-2xl" />
-      </button>
+  // Auto-resize the textarea based on content
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    // Reset height to auto to get the correct scrollHeight
+    textarea.style.height = "auto";
+
+    // Set the height to scrollHeight (capped by max-height in CSS)
+    const newHeight = Math.min(textarea.scrollHeight, 150);
+    textarea.style.height = `${newHeight}px`;
+  }, [message]);
+
+  return (
+    <div
+      className={cn(
+        "sticky bottom-0 left-0 right-0 bg-secondary border-t border-border p-4 z-10",
+        className
+      )}
+    >
+      <div className="max-w-4xl mx-auto relative">
+        <div className="relative rounded-lg border border-input bg-primary shadow-sm transition-all">
+          <textarea
+            ref={textareaRef}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={"Type a message..."}
+            disabled={false}
+            className="w-full resize-none px-4 py-3 pr-12 focus:outline-none focus:ring-0 max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent"
+            rows={1}
+          />
+
+          <Button
+            onClick={handleSendMessage}
+            disabled={!message.trim()}
+            size="icon"
+            className={cn(
+              "absolute bottom-2 right-2 h-8 w-8 rounded-full transition-opacity",
+              !message.trim() && "opacity-70"
+            )}
+          >
+            <Send size={16} className="text-gray-500 font-bold" />
+            <span className="sr-only">Send message</span>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
