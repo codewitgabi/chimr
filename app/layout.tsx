@@ -7,6 +7,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import FirebaseCloudMessagingProvider from "@/components/providers/FireabaseCloudMessagingProvider";
 
 const font = Josefin_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -121,7 +122,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <FirebaseCloudMessagingProvider>
+            {children}
+          </FirebaseCloudMessagingProvider>
         </ThemeProvider>
 
         {/* Toast */}

@@ -14,10 +14,12 @@ function useAuth() {
   const router = useRouter();
 
   useEffect(() => {
+    const isAuthenticated = authService.isAuthenticated();
     const user = authService.getUser();
 
-    if (!user) {
-      router.push("/auth/signup");
+    if (!isAuthenticated) {
+      router.push("/auth/login");
+      return;
     }
 
     setUser(user);

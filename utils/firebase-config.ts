@@ -12,6 +12,6 @@ const firebaseConfig = {
   measurementId: "G-5LMDZMBQC2",
 };
 
-
 export const firebaseApp = initializeApp(firebaseConfig);
-export const firebaseMessaging = getMessaging(firebaseApp);
+export const firebaseMessaging =
+  typeof window !== "undefined" ? getMessaging(firebaseApp) : null;
