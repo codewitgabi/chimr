@@ -1,5 +1,6 @@
 "use client";
 
+import { MessageCircleMore } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -24,6 +25,7 @@ function FirebaseCloudMessagingProvider({ children }: { children: ReactNode }) {
         }
 
         // Import Firebase modules
+        
         const { firebaseMessaging } = await import("@/utils/firebase-config");
         const { getToken, onMessage } = await import("firebase/messaging");
 
@@ -44,6 +46,7 @@ function FirebaseCloudMessagingProvider({ children }: { children: ReactNode }) {
         }
 
         console.log("Getting FCM token...");
+
         try {
           const currentToken = await getToken(firebaseMessaging!, {
             vapidKey: FIREBASE_VAPID_KEY,
@@ -63,14 +66,14 @@ function FirebaseCloudMessagingProvider({ children }: { children: ReactNode }) {
           console.error("Error getting FCM token:", tokenError);
         }
 
-        // Set up message listener
-        console.log("Setting up message listener...");
         onMessage(firebaseMessaging!, (payload) => {
-          console.log("Push notification received:", payload);
           if (payload.notification) {
-            toast(
-              `${payload.notification.title}: ${payload.notification.body}`
-            );
+            toast(payload.notification.title, {
+              description: payload.notification.body,
+              position: "top-right",
+              duration: 2000,
+              icon: <MessageCircleMore />,
+            });
           }
         });
 
