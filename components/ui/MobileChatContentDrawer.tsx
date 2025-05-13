@@ -8,6 +8,7 @@ import ChatMessageInput from "./chat/ChatMessageInput";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { useRef, useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ChatBubbleStackShimmerLoader from "./shimmer-loaders/ChatBubbleShimmerLoader";
 
 interface MobileChatContentDrawerProps {
   open: boolean;
@@ -18,8 +19,13 @@ function MobileChatContentDrawer({
   open,
   setOpenMobileChatContent,
 }: MobileChatContentDrawerProps) {
-  const { setSelectedContact, selectedContact, chatHistory, user } =
-    useAppStore((state) => state);
+  const {
+    setSelectedContact,
+    selectedContact,
+    chatHistory,
+    user,
+    messageIsLoading,
+  } = useAppStore((state) => state);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   // Check if the screen width is below or equal to 655px
@@ -91,7 +97,9 @@ function MobileChatContentDrawer({
               ref={chatContainerRef}
             >
               <div className="grow overflow-y-auto">
-                {chatHistory.messages.length > 0 ? (
+                {messageIsLoading ? (
+                  <ChatBubbleStackShimmerLoader />
+                ) : chatHistory.messages.length > 0 ? (
                   <>
                     {chatHistory.messages.map(
                       ({
@@ -113,9 +121,7 @@ function MobileChatContentDrawer({
                   </>
                 ) : (
                   <div className="text-center flex items-center justify-center">
-                    <h2 className="text-foreground">
-                      Start a new conversation
-                    </h2>
+                    <h2 className="">Start a new conversation</h2>
                   </div>
                 )}
               </div>
