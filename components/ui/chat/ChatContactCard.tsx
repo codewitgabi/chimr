@@ -18,7 +18,7 @@ function ChatContactCard({
   unreadCount,
   about,
 }: Omit<IChatContact, "isRead">) {
-  const { setSelectedContact, selectedContact, socket } = useAppStore(
+  const { setSelectedContact, selectedContact, socket, setMessageIsLoading } = useAppStore(
     (state) => state
   );
 
@@ -27,6 +27,8 @@ function ChatContactCard({
   const [localUnreadCount, setLocalUnreadCount] = useState<number>(unreadCount);
 
   const handleClick = () => {
+    setMessageIsLoading(true); // Show shimmer loading for chat
+
     setSelectedContact({
       contactId,
       username,

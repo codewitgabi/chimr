@@ -13,6 +13,7 @@ export type State = {
   socket: RefObject<Socket | null> | null;
   contactSearchQuery: string;
   contactsIsLoading: boolean;
+  messageIsLoading: boolean;
 };
 
 export type StateAction = {
@@ -26,4 +27,5 @@ export type StateAction = {
   setContactSearchQuery: (contactSearchQuery: string) => void;
   resetState: () => void;
   setContactsIsLoading: (value: boolean) => void;
+  setMessageIsLoading: (value: boolean) => void;
 };

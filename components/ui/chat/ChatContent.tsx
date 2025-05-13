@@ -5,9 +5,12 @@ import useAppStore from "@/utils/store";
 import Image, { StaticImageData } from "next/image";
 import ChatMessageInput from "./ChatMessageInput";
 import ChatBubble from "./ChatBubble";
+import ChatBubbleStackShimmerLoader from "../shimmer-loaders/ChatBubbleShimmerLoader";
 
 function ChatContent() {
-  const { selectedContact, chatHistory, user } = useAppStore((state) => state);
+  const { selectedContact, chatHistory, user, messageIsLoading } = useAppStore(
+    (state) => state
+  );
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,6 +26,8 @@ function ChatContent() {
       setTimeout(scrollToBottom, 50);
     }
   }, [selectedContact, chatHistory.messages.length]);
+
+  console.log({ messageIsLoading })
 
   return (
     <div className="flex-1 col-span-2 overflow-y-auto flex flex-col max-[655px]:hidden">
@@ -86,7 +91,9 @@ function ChatContent() {
         ref={chatContainerRef}
       >
         <div className="grow overflow-y-auto p-4">
-          {chatHistory.messages.length > 0 ? (
+          {messageIsLoading ? (
+            <ChatBubbleStackShimmerLoader />
+          ) : chatHistory.messages.length > 0 ? (
             <>
               {chatHistory.messages.map(
                 ({ _id, createdAt, sender: { _id: senderId }, message }) => (

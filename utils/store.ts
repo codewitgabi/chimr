@@ -17,6 +17,7 @@ const initialState: State = {
   socket: null,
   contactSearchQuery: "",
   contactsIsLoading: true,
+  messageIsLoading: true,
 };
 
 const useAppStore = create<State & StateAction>((set) => ({
@@ -59,6 +60,10 @@ const useAppStore = create<State & StateAction>((set) => ({
 
   setContactsIsLoading: (value) => {
     set({ contactsIsLoading: value });
+  },
+
+  setMessageIsLoading: (value) => {
+    set({ messageIsLoading: value });
   },
 
   resetState: () => {
