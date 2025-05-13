@@ -37,9 +37,10 @@ function SocketProvider({ children }: { children: ReactNode }) {
     // Connect to socket
 
     const accessToken = authService.getAccessToken();
+    const fcmToken = localStorage.getItem("fcmToken") ?? "";
 
     if (accessToken) {
-      socket.current = initializeSocket(accessToken);
+      socket.current = initializeSocket(accessToken, fcmToken);
       socket.current.connect();
       setSocket(socket);
     }

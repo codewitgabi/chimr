@@ -3,8 +3,6 @@
 import { IChatHistory, IChatMessage } from "@/types/chat.types";
 import useAppStore from "@/utils/store";
 import updateContactPosition from "@/utils/updateContactPosition";
-// import { AiOutlineSend } from "react-icons/ai";
-// import { Plus } from "lucide-react";
 import { useState, useRef, useEffect, type KeyboardEvent } from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,15 +26,6 @@ function ChatMessageInput({ className }: { className?: string }) {
     username: user?.username as string,
     profilePic: user?.profilePic as string,
   };
-
-  // const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   setMessage(e.target.value);
-
-  //   if (textareaRef.current) {
-  //     textareaRef.current.style.height = "auto"; // reset
-  //     textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-  //   }
-  // };
 
   const handleSendMessage = () => {
     // Only send message when there is a selected contact and message length is greater than 1
@@ -83,7 +72,7 @@ function ChatMessageInput({ className }: { className?: string }) {
         textareaRef.current.style.height = "auto";
       }
 
-      // Update contact position
+      // Update contact
 
       updateContactPosition(
         selectedContact?.contactId as string,
@@ -109,9 +98,11 @@ function ChatMessageInput({ className }: { className?: string }) {
     if (!textarea) return;
 
     // Reset height to auto to get the correct scrollHeight
+
     textarea.style.height = "auto";
 
     // Set the height to scrollHeight (capped by max-height in CSS)
+
     const newHeight = Math.min(textarea.scrollHeight, 150);
     textarea.style.height = `${newHeight}px`;
   }, [message]);
@@ -132,7 +123,7 @@ function ChatMessageInput({ className }: { className?: string }) {
             onKeyDown={handleKeyDown}
             placeholder={"Type a message..."}
             disabled={false}
-            className="w-full resize-none px-4 py-3 pr-12 focus:outline-none focus:ring-0 max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent"
+            className="w-full resize-none px-4 py-3 pr-12 focus:outline-none focus:ring-0 max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent text-foreground placeholder:text-foreground/50"
             rows={1}
           />
 

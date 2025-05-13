@@ -9,12 +9,14 @@ interface ChatBubbleProps {
 function ChatBubble({ message, timestamp, type }: ChatBubbleProps) {
   return (
     <div
-      className={`p-4 flex gap-8 bg-primary w-max max-w-full items-end rounded-3xl mb-1 max-[655px]:w-fit ${
+      className={`p-3 flex gap-2 bg-primary w-fit max-w-[85%] items-end rounded-3xl mb-1 ${
         type === "sender" ? "ml-auto rounded-tr-none" : "rounded-tl-none"
       }`}
     >
-      <p className="text-sm">{message}</p>
-      <span className="text-xs shrink-0">{parseTimestampToTimeString(timestamp)}</span>
+      <p className="text-sm break-words text-foreground">{message}</p>
+      <span className="text-xs shrink-0 whitespace-nowrap text-foreground/70">
+        {parseTimestampToTimeString(timestamp)}
+      </span>
     </div>
   );
 }

@@ -18,9 +18,8 @@ function MobileChatContentDrawer({
   open,
   setOpenMobileChatContent,
 }: MobileChatContentDrawerProps) {
-  const { setSelectedContact, selectedContact, chatHistory } = useAppStore(
-    (state) => state
-  );
+  const { setSelectedContact, selectedContact, chatHistory, user } =
+    useAppStore((state) => state);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   // Check if the screen width is below or equal to 655px
@@ -44,7 +43,6 @@ function MobileChatContentDrawer({
   };
 
   // Close drawer automatically when screen size changes from mobile to desktop
-
   useEffect(() => {
     if (!isMobile && open) {
       setOpenMobileChatContent(false);
@@ -52,7 +50,6 @@ function MobileChatContentDrawer({
   }, [isMobile, open, setOpenMobileChatContent]);
 
   // If not mobile, don't render the drawer at all
-
   if (!isMobile) {
     return null;
   }
@@ -65,12 +62,11 @@ function MobileChatContentDrawer({
         onClose={setOpenMobileChatContent}
         className="drawer"
       >
-        <div className="h-full flex flex-col bg-secondary max-w-full text-white">
+        <div className="h-full flex flex-col bg-secondary max-w-full text-foreground">
           {/* Header */}
-
           <div className="p-4 flex items-center gap-4 border-b border-primary w-dvw">
             <button className="" onClick={handleClose}>
-              <IoChevronBackSharp className="text-2xl" />
+              <IoChevronBackSharp className="text-2xl text-foreground" />
             </button>
 
             {selectedContact && (
@@ -82,14 +78,14 @@ function MobileChatContentDrawer({
                 className="rounded-full"
               />
             )}
-            <h1 className="line-clamp-1">{selectedContact?.username}</h1>
+            <h1 className="line-clamp-1 text-foreground">
+              {selectedContact?.username}
+            </h1>
           </div>
 
           {/* Chat section */}
-
           <div className="flex-1 relative overflow-y-auto">
             {/* Chat content */}
-
             <div
               className="bg-secondary max-[655px]:rounded-none rounded-xl p-4 grow overflow-y-auto relative flex flex-col"
               ref={chatContainerRef}
@@ -108,11 +104,7 @@ function MobileChatContentDrawer({
                           key={_id}
                           message={message}
                           timestamp={createdAt}
-                          type={
-                            senderId === "67f126dac0b8fa775dc666dd"
-                              ? "sender"
-                              : "receiver"
-                          }
+                          type={senderId === user?.id ? "sender" : "receiver"}
                         />
                       )
                     )}
@@ -121,16 +113,14 @@ function MobileChatContentDrawer({
                   </>
                 ) : (
                   <div className="text-center flex items-center justify-center">
-                    <h2 className="">Start a new conversation</h2>
+                    <h2 className="text-foreground">
+                      Start a new conversation
+                    </h2>
                   </div>
                 )}
               </div>
-
-              {/* Message input box */}
             </div>
           </div>
-
-          {/* <ChatMessageInput /> */}
 
           <div className="border-t-secondary">
             <ChatMessageInput />
