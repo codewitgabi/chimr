@@ -1,8 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import LogoutButton from "@/components/ui/buttons/Logout";
 import AppLogo from "../AppLogo";
+import { usePathname } from "next/navigation";
 
 function Sidebar() {
+  const pathname = usePathname();
+
+  console.log({ pathname });
+
   return (
     <aside className="w-[200px] h-full bg-secondary flex flex-col shrink-0 justify-between gap-12 overflow-y-auto max-[965px]:hidden">
       <div>
@@ -16,8 +23,12 @@ function Sidebar() {
           {/* Dashboard link */}
 
           <Link
-            href=""
-            className="flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300"
+            href="/dashboard"
+            className={`flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300 ${
+              pathname.includes("/dashboard")
+                ? "border-l-4 border-blue-500"
+                : ""
+            }`}
           >
             <svg
               width="20"
@@ -60,8 +71,10 @@ function Sidebar() {
           {/* Product link */}
 
           <Link
-            href=""
-            className="flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300"
+            href="/products"
+            className={`flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300 ${
+              pathname.includes("/products") ? "border-l-4 border-blue-500" : ""
+            }`}
           >
             <svg
               width="20"
@@ -85,7 +98,9 @@ function Sidebar() {
 
           <Link
             href=""
-            className="flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300"
+            className={`flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300 ${
+              pathname.includes("/order") ? "border-l-4 border-blue-500" : ""
+            }`}
           >
             <svg
               width="20"
@@ -138,8 +153,10 @@ function Sidebar() {
           {/* Chat link */}
 
           <Link
-            href=""
-            className="flex items-center gap-4 py-2 px-4 border-l-4 hover:bg-hover-effect transition-all duration-300 border-blue-500"
+            href="/"
+            className={`flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300 ${
+              pathname === "/" ? "border-l-4 border-blue-500" : ""
+            }`}
           >
             <svg
               width="20"
@@ -168,7 +185,11 @@ function Sidebar() {
 
           <Link
             href=""
-            className="flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300"
+            className={`flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300 ${
+              pathname.includes("/documents")
+                ? "border-l-4 border-blue-500"
+                : ""
+            }`}
           >
             <svg
               width="20"
@@ -216,7 +237,9 @@ function Sidebar() {
 
           <Link
             href=""
-            className="flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300"
+            className={`flex items-center gap-4 py-2 px-4 hover:bg-hover-effect transition-all duration-300 ${
+              pathname.includes("/accounts") ? "border-l-4 border-blue-500" : ""
+            }`}
           >
             <svg
               width="20"
