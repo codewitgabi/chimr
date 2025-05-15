@@ -29,6 +29,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     chatHistory,
     user,
     setContactsIsLoading,
+    setMessageIsLoading,
   } = useAppStore((state) => state);
   const isMobile = useMediaQuery("(max-width: 655px)");
   const socket = useRef<Socket | null>(null);
@@ -87,6 +88,8 @@ function SocketProvider({ children }: { children: ReactNode }) {
 
     function onGetChatHistory(chatHistory: IChatHistory) {
       setChatHistory(chatHistory);
+
+      setMessageIsLoading(false);
     }
 
     function onUpdateContact({
@@ -219,6 +222,7 @@ function SocketProvider({ children }: { children: ReactNode }) {
     isMobile,
     setSocket,
     setContactsIsLoading,
+    setMessageIsLoading,
   ]);
 
   return <>{children}</>;

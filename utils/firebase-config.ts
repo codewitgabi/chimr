@@ -1,6 +1,11 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging } from "firebase/messaging";
+import {
+  getAuth,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyG0xcKRmpoakFYpUEef5xTso-V1dHudE",
@@ -13,5 +18,21 @@ const firebaseConfig = {
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
+export const firebaseAuth = getAuth(firebaseApp);
+firebaseAuth.useDeviceLanguage();
 export const firebaseMessaging =
   typeof window !== "undefined" ? getMessaging(firebaseApp) : null;
+export const githubProvider = new GithubAuthProvider();
+
+// Google provider
+
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope("https://www.googleapis.com/auth/userinfo.email");
+googleProvider.addScope("https://www.googleapis.com/auth/userinfo.profile");
+googleProvider.setCustomParameters({
+  login_hint: "user@example.com",
+  prompt: "select_account",
+  app_name: "Chimr", // Try setting app name here
+});
+
+export const facebookProvider = new FacebookAuthProvider();
