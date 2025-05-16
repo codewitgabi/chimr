@@ -1,4 +1,8 @@
+import api from "@/lib/api";
+import { TOauthSuccessCallback } from "@/types/auth.types";
 import { IUser } from "@/types/user.types";
+import { UserCredential } from "firebase/auth";
+import { toast } from "sonner";
 
 class AuthService {
   setAccessToken(token: string): void {
@@ -54,7 +58,7 @@ class AuthService {
       const { exp } = JSON.parse(jsonPayload);
 
       // Check if token is expired
-      
+
       if (exp * 1000 < Date.now()) {
         this.clearAuthData();
         return false;
@@ -65,6 +69,70 @@ class AuthService {
       console.error(error);
       this.clearAuthData();
       return false;
+    }
+  }
+
+  async loginViaSocialAuth(
+    result: UserCredential,
+    callback?: TOauthSuccessCallback
+  ) {
+    // Get userinfo
+
+    const user = result.user;
+    const token = await user.getIdToken();
+    // const username = user?.displayName;
+
+    // Make server call
+
+    try {
+      const response = await api.post("/auth/oauth/convert-token", {
+        domain: "github",
+        idToken: token,
+      });
+      const data = response.data;
+
+      if (data.status === "success") {
+        // Check if account is new
+
+        const isNewUser: boolean = response.data.data.isNewUser;
+
+        if (isNewUser) {
+          callback?.(isNewUser);
+          return;
+        }
+
+        // Login the user
+
+        const {
+          user: { username, _id, jobTitle, about, profilePic },
+          accessToken,
+        }: {
+          accessToken: string;
+          user: Exclude<IUser, "id"> & { _id: string };
+        } = response.data.data;
+
+        // Set access token
+
+        authService.setAccessToken(accessToken);
+
+        // Set user to local storage
+
+        authService.setUser({
+          id: _id,
+          username,
+          jobTitle,
+          about,
+          profilePic,
+        });
+
+        toast.success("Authentication", {
+          description: "Login successful",
+        });
+
+        callback?.(isNewUser);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }

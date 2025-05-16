@@ -12,3 +12,6 @@ export interface LoginFormFields {
   username: string;
   password: string;
 }
+
+
+export type TOauthSuccessCallback = (isNewUser: boolean) => void;
