@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import AddToCartButton from "../buttons/AddToCart";
 import AddToWishlistButton from "../buttons/AddToWishlist";
 import { IProduct } from "@/types/product.types";
 
@@ -8,45 +6,42 @@ function ProductCard({
   id,
   thumbnail,
   title,
+  description,
   price,
-  addedToCart,
   addedToWishList,
 }: Omit<IProduct, "">) {
   return (
-    <div className="rounded-md">
-      <div className="w-full">
+    <div className="rounded-xl relative bg-secondary h-max group">
+      <div className="w-full overflow-hidden rounded-t-xl">
         <Image
           src={thumbnail}
           alt={`${title}-image`}
           width={200}
           height={200}
-          className="object-cover w-full"
+          className="object-cover w-full rounded-t-xl aspect-square group-hover:scale-105 transition-transform duration-300"
           priority
         />
       </div>
 
       {/* Product detail */}
 
-      <div className="mt-2 flex items-center gap-4">
-        <Link href="" className="line-clamp-1 text-base">
+      <div className="p-2 space-y-2">
+        <h2 className="line-clamp-1 font-semibold opacity-90 text-sm">
           {title}
-        </Link>
+        </h2>
+        <p className="line-clamp-2 opacity-60 text-[0.8rem]">{description}</p>
 
-        <h1 className="text-lg font-bold opacity-85">
+        <span className="text-lg font-bold opacity-85">
           {Intl.NumberFormat("en-us", {
             style: "currency",
             currency: "USD",
           }).format(price)}
-        </h1>
+        </span>
       </div>
 
       {/* Actions */}
 
-      <div className="flex items-center gap-4 mt-4">
-        <AddToCartButton productId={id} addedToCart={addedToCart} className="w-full" />
-
-        <AddToWishlistButton productId={id} addedToWishList={addedToWishList} />
-      </div>
+      <AddToWishlistButton productId={id} addedToWishList={addedToWishList} />
     </div>
   );
 }

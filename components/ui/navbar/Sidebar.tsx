@@ -8,8 +8,6 @@ import { usePathname } from "next/navigation";
 function Sidebar() {
   const pathname = usePathname();
 
-  console.log({ pathname });
-
   return (
     <aside className="w-[200px] h-full bg-secondary flex flex-col shrink-0 justify-between gap-12 overflow-y-auto max-[965px]:hidden">
       <div>

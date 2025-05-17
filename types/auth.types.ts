@@ -13,5 +13,9 @@ export interface LoginFormFields {
   password: string;
 }
 
-
-export type TOauthSuccessCallback = (isNewUser: boolean) => void;
+export type TOauthSuccessCallback = (
+  isNewUser: boolean,
+  idToken: string,
+  username?: string | null,
+  provider?: "google" | "github" | "facebook"
+) => void;

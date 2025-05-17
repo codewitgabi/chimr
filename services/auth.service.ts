@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import { TOauthSuccessCallback } from "@/types/auth.types";
 import { IUser } from "@/types/user.types";
+import { AxiosError } from "axios";
 import { UserCredential } from "firebase/auth";
 import { toast } from "sonner";
 
@@ -74,35 +75,43 @@ class AuthService {
 
   async loginViaSocialAuth(
     result: UserCredential,
-    callback?: TOauthSuccessCallback
+    callback?: TOauthSuccessCallback,
+    options?: {
+      domain: string;
+      extras?: {
+        username?: string;
+        jobTitle?: string;
+        about?: string;
+        profilePic?: string;
+      };
+    }
   ) {
     // Get userinfo
-
     const user = result.user;
     const token = await user.getIdToken();
-    // const username = user?.displayName;
 
     // Make server call
-
     try {
-      const response = await api.post("/auth/oauth/convert-token", {
-        domain: "github",
+      const requestData = {
+        domain: options?.domain || "github",
         idToken: token,
-      });
+        ...(options?.extras && { extras: options.extras }),
+      };
+
+      const response = await api.post("/auth/oauth/convert-token", requestData);
       const data = response.data;
 
       if (data.status === "success") {
         // Check if account is new
-
         const isNewUser: boolean = response.data.data.isNewUser;
 
-        if (isNewUser) {
-          callback?.(isNewUser);
+        if (isNewUser && !options?.extras) {
+          const username = user?.displayName;
+          callback?.(isNewUser, token, username);
           return;
         }
 
         // Login the user
-
         const {
           user: { username, _id, jobTitle, about, profilePic },
           accessToken,
@@ -112,11 +121,9 @@ class AuthService {
         } = response.data.data;
 
         // Set access token
-
         authService.setAccessToken(accessToken);
 
         // Set user to local storage
-
         authService.setUser({
           id: _id,
           username,
@@ -129,10 +136,20 @@ class AuthService {
           description: "Login successful",
         });
 
-        callback?.(isNewUser);
+        callback?.(isNewUser, token);
       }
     } catch (error) {
-      console.error(error);
+      if (error instanceof AxiosError) {
+        const data = error.response?.data;
+
+        toast.error("Authentication error", {
+          description: data?.error.message,
+        });
+      } else {
+        toast.error("Authentication error", {
+          description: "Please try again",
+        });
+      }
     }
   }
 }

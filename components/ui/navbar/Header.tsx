@@ -5,7 +5,7 @@ import useAuth from "@/hooks/useAuth";
 import useAppStore from "@/utils/store";
 import ProfileMenu from "../ProfileMenu";
 import { BellRing } from "lucide-react";
-
+import MobileMenu from "../buttons/MobileMenu";
 interface HeaderProps {
   title: string;
 }
@@ -17,7 +17,11 @@ function Header({ title }: HeaderProps) {
   return (
     <header className="shrink-0">
       <nav className="flex items-center justify-between gap-12">
-        <h1 className="font-semibold text-lg">{title}</h1>
+        <div className="flex items-center gap-2">
+          <MobileMenu />
+
+          <h1 className="font-semibold text-lg">{title}</h1>
+        </div>
 
         <div className="flex items-center gap-4">
           <ToggleThemeButton />

@@ -20,12 +20,12 @@ function AddToWishlistButton({ addedToWishList }: AddToWishlistButtonProps) {
     <motion.button
       onClick={handleClick}
       whileTap={{ scale: 0.9 }}
-      className="cursor-pointer"
+      className="cursor-pointer absolute top-2 right-2"
     >
       <Heart
         size={20}
-        className="text-red-400"
-        fill={added ? "var(--color-red)" : "var(--color-primary)"}
+        className="text-red-500 opacity-80 hover:opacity-100 transition-opacity"
+        fill={added ? "currentColor" : "transparent"}
       />
     </motion.button>
   );

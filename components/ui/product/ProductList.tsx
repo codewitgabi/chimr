@@ -6,7 +6,8 @@ const products: IProduct[] = [
   {
     id: 1,
     title: "Lorem ipsum dolor sit amet.",
-    description: "",
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore incidunt reprehenderit animi hic porro aliquid deserunt eligendi nesciunt quos! Culpa nesciunt iste voluptate, laudantium reiciendis repellendus atque? Voluptates, totam et.",
     price: 25,
     thumbnail: TestProductImage,
     addedToCart: false,
@@ -15,8 +16,9 @@ const products: IProduct[] = [
   {
     id: 2,
     title: "Lorem ipsum dolor sit amet.",
-    description: "",
-    price: 25,
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore incidunt reprehenderit animi hic porro aliquid deserunt eligendi nesciunt quos! Culpa nesciunt iste voluptate, laudantium reiciendis repellendus atque? Voluptates, totam et.",
+    price: 96,
     thumbnail: TestProductImage,
     addedToCart: false,
     addedToWishList: false,
@@ -24,8 +26,9 @@ const products: IProduct[] = [
   {
     id: 3,
     title: "Lorem ipsum dolor sit amet.",
-    description: "",
-    price: 25,
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore incidunt reprehenderit animi hic porro aliquid deserunt eligendi nesciunt quos! Culpa nesciunt iste voluptate, laudantium reiciendis repellendus atque? Voluptates, totam et.",
+    price: 25.45,
     thumbnail: TestProductImage,
     addedToCart: false,
     addedToWishList: false,
@@ -33,7 +36,8 @@ const products: IProduct[] = [
   {
     id: 4,
     title: "Lorem ipsum dolor sit amet.",
-    description: "",
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore incidunt reprehenderit animi hic porro aliquid deserunt eligendi nesciunt quos! Culpa nesciunt iste voluptate, laudantium reiciendis repellendus atque? Voluptates, totam et.",
     price: 25,
     thumbnail: TestProductImage,
     addedToCart: false,
@@ -42,8 +46,9 @@ const products: IProduct[] = [
   {
     id: 5,
     title: "Lorem ipsum dolor sit amet.",
-    description: "",
-    price: 25,
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore incidunt reprehenderit animi hic porro aliquid deserunt eligendi nesciunt quos! Culpa nesciunt iste voluptate, laudantium reiciendis repellendus atque? Voluptates, totam et.",
+    price: 18.25,
     thumbnail: TestProductImage,
     addedToCart: false,
     addedToWishList: false,
@@ -51,8 +56,9 @@ const products: IProduct[] = [
   {
     id: 6,
     title: "Lorem ipsum dolor sit amet.",
-    description: "",
-    price: 25,
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore incidunt reprehenderit animi hic porro aliquid deserunt eligendi nesciunt quos! Culpa nesciunt iste voluptate, laudantium reiciendis repellendus atque? Voluptates, totam et.",
+    price: 20.5,
     thumbnail: TestProductImage,
     addedToCart: false,
     addedToWishList: false,
