@@ -22,6 +22,7 @@ import authService from "@/services/auth.service";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
+import { UserCredential } from "firebase/auth";
 
 function CompleteAuthProfileModal({
   open,
@@ -66,7 +67,7 @@ function CompleteAuthProfileModal({
           user: {
             getIdToken: async () => idToken,
           },
-        } as any,
+        } as UserCredential,
         onSuccess,
         {
           domain: provider as string,
